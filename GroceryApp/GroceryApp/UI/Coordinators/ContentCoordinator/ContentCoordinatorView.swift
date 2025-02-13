@@ -7,31 +7,23 @@
 
 import SwiftUI
 
-private enum Constants {
-    static let tabBarFont = UIFont.systemFont(ofSize: 12, weight: .regular)
-    static let coordinateSpaceName = "ContentView"
-}
-
 struct ContentCoordinatorView: View {
     @ObservedObject var coordinator: ContentCoordinator
 
     var body: some View {
         tabView
-            .coordinateSpace(name: Constants.coordinateSpaceName)
     }
 
     private var tabView: some View {
         TabView(selection: $coordinator.router.appState.selectedBottomNavigationTab) {
             ForEach(coordinator.tabBarItems, id: \.self) { tab in
                 tabItemView(for: tab)
-                    .background(.red)
             }
         }
-        .id(coordinator.tabBarItems.count)
     }
 
     private func tabItemView(for tab: BottomNavigationTab) -> some View {
-        Text("ads")
+        Text("Tab")
             .tabItem {
                 Text(tab.key)
             }

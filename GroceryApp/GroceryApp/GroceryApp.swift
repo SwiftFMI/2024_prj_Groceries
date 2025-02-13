@@ -9,9 +9,11 @@ import SwiftUI
 
 @main
 struct GroceryApp: App {
+    let appCoordinator = AppCoordinator()
+
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            appCoordinator.start()
         }
     }
 }

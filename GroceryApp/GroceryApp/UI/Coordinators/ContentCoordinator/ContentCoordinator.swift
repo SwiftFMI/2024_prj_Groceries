@@ -9,7 +9,7 @@ import SwiftUI
 
 final class ContentCoordinator: Coordinator, ObservableObject {
 
-    let tabBarItems = [BottomNavigationTab]()
+    let tabBarItems: [BottomNavigationTab] = [.home, .shoppingCart, .profile]
     var router: Router
 
     init(router: Router) {
