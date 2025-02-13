@@ -6,6 +6,16 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		E816A3AB2D5E8D2C00CF2F77 /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = E816A3AA2D5E8D2C00CF2F77 /* FirebaseAnalytics */; };
+		E816A3AD2D5E8D2C00CF2F77 /* FirebaseAnalyticsOnDeviceConversion in Frameworks */ = {isa = PBXBuildFile; productRef = E816A3AC2D5E8D2C00CF2F77 /* FirebaseAnalyticsOnDeviceConversion */; };
+		E816A3AF2D5E8D2C00CF2F77 /* FirebaseAnalyticsWithoutAdIdSupport in Frameworks */ = {isa = PBXBuildFile; productRef = E816A3AE2D5E8D2C00CF2F77 /* FirebaseAnalyticsWithoutAdIdSupport */; };
+		E816A3B12D5E8D2C00CF2F77 /* FirebaseAppCheck in Frameworks */ = {isa = PBXBuildFile; productRef = E816A3B02D5E8D2C00CF2F77 /* FirebaseAppCheck */; };
+		E816A3B32D5E8D2C00CF2F77 /* FirebaseAppDistribution-Beta in Frameworks */ = {isa = PBXBuildFile; productRef = E816A3B22D5E8D2C00CF2F77 /* FirebaseAppDistribution-Beta */; };
+		E816A3CE2D5E9B3600CF2F77 /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = E816A3CD2D5E9B3600CF2F77 /* FirebaseFirestore */; };
+		E816A3D02D5E9B4D00CF2F77 /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = E816A3CF2D5E9B4D00CF2F77 /* FirebaseAuth */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXFileReference section */
 		5A435E3B2D5E3CF1006EE042 /* GroceryApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GroceryApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -23,6 +33,13 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E816A3B12D5E8D2C00CF2F77 /* FirebaseAppCheck in Frameworks */,
+				E816A3AB2D5E8D2C00CF2F77 /* FirebaseAnalytics in Frameworks */,
+				E816A3B32D5E8D2C00CF2F77 /* FirebaseAppDistribution-Beta in Frameworks */,
+				E816A3AF2D5E8D2C00CF2F77 /* FirebaseAnalyticsWithoutAdIdSupport in Frameworks */,
+				E816A3AD2D5E8D2C00CF2F77 /* FirebaseAnalyticsOnDeviceConversion in Frameworks */,
+				E816A3D02D5E9B4D00CF2F77 /* FirebaseAuth in Frameworks */,
+				E816A3CE2D5E9B3600CF2F77 /* FirebaseFirestore in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -33,6 +50,7 @@
 			isa = PBXGroup;
 			children = (
 				5A435E3D2D5E3CF1006EE042 /* GroceryApp */,
+				E816A3CC2D5E9B3600CF2F77 /* Frameworks */,
 				5A435E3C2D5E3CF1006EE042 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -43,6 +61,13 @@
 				5A435E3B2D5E3CF1006EE042 /* GroceryApp.app */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		E816A3CC2D5E9B3600CF2F77 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -65,6 +90,13 @@
 			);
 			name = GroceryApp;
 			packageProductDependencies = (
+				E816A3AA2D5E8D2C00CF2F77 /* FirebaseAnalytics */,
+				E816A3AC2D5E8D2C00CF2F77 /* FirebaseAnalyticsOnDeviceConversion */,
+				E816A3AE2D5E8D2C00CF2F77 /* FirebaseAnalyticsWithoutAdIdSupport */,
+				E816A3B02D5E8D2C00CF2F77 /* FirebaseAppCheck */,
+				E816A3B22D5E8D2C00CF2F77 /* FirebaseAppDistribution-Beta */,
+				E816A3CD2D5E9B3600CF2F77 /* FirebaseFirestore */,
+				E816A3CF2D5E9B4D00CF2F77 /* FirebaseAuth */,
 			);
 			productName = GroceryApp;
 			productReference = 5A435E3B2D5E3CF1006EE042 /* GroceryApp.app */;
@@ -94,6 +126,9 @@
 			);
 			mainGroup = 5A435E322D5E3CF1006EE042;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				E816A3A92D5E8D2C00CF2F77 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 5A435E3C2D5E3CF1006EE042 /* Products */;
 			projectDirPath = "";
@@ -324,6 +359,55 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		E816A3A92D5E8D2C00CF2F77 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/firebase/firebase-ios-sdk";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 11.8.1;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		E816A3AA2D5E8D2C00CF2F77 /* FirebaseAnalytics */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = E816A3A92D5E8D2C00CF2F77 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseAnalytics;
+		};
+		E816A3AC2D5E8D2C00CF2F77 /* FirebaseAnalyticsOnDeviceConversion */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = E816A3A92D5E8D2C00CF2F77 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseAnalyticsOnDeviceConversion;
+		};
+		E816A3AE2D5E8D2C00CF2F77 /* FirebaseAnalyticsWithoutAdIdSupport */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = E816A3A92D5E8D2C00CF2F77 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseAnalyticsWithoutAdIdSupport;
+		};
+		E816A3B02D5E8D2C00CF2F77 /* FirebaseAppCheck */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = E816A3A92D5E8D2C00CF2F77 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseAppCheck;
+		};
+		E816A3B22D5E8D2C00CF2F77 /* FirebaseAppDistribution-Beta */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = E816A3A92D5E8D2C00CF2F77 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = "FirebaseAppDistribution-Beta";
+		};
+		E816A3CD2D5E9B3600CF2F77 /* FirebaseFirestore */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = E816A3A92D5E8D2C00CF2F77 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseFirestore;
+		};
+		E816A3CF2D5E9B4D00CF2F77 /* FirebaseAuth */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = E816A3A92D5E8D2C00CF2F77 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseAuth;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 5A435E332D5E3CF1006EE042 /* Project object */;
 }
