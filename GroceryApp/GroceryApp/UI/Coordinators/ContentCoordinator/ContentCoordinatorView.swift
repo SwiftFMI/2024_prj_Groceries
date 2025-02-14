@@ -23,7 +23,7 @@ struct ContentCoordinatorView: View {
     }
 
     private func tabItemView(for tab: BottomNavigationTab) -> some View {
-        Text("Tab")
+        coordinator.tabView(for: tab)
             .tabItem {
                 Text(tab.key)
             }
