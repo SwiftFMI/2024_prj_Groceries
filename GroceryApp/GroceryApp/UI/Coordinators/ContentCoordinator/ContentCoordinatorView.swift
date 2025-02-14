@@ -9,6 +9,9 @@ import SwiftUI
 
 struct ContentCoordinatorView: View {
     @ObservedObject var coordinator: ContentCoordinator
+    
+    @State var fs = FireStoreManager()
+    
 
     var body: some View {
         tabView
@@ -28,6 +31,7 @@ struct ContentCoordinatorView: View {
                 Text(tab.key)
             }
             .tag(tab)
+            
     }
 }
 
