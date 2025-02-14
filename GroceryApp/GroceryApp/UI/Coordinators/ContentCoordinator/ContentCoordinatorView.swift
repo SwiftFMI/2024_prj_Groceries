@@ -26,13 +26,8 @@ struct ContentCoordinatorView: View {
     }
 
     private func tabItemView(for tab: BottomNavigationTab) -> some View {
-        Button {
-            Task {
-                await fs.fetchCategories()
-            }
-        } label: {
-            Text("Click")
-        }            .tabItem {
+        Text("Tab")
+            .tabItem {
                 Text(tab.key)
             }
             .tag(tab)

@@ -54,4 +54,33 @@ class FireStoreManager: ObservableObject {
           print("Error getting documents: \(error)")
         }
     }
+    
+
+    func addMultipleCategories(categories: [Category]) async {
+        let db = Firestore.firestore()
+
+        do {
+            for category in categories {
+                let newDocRef = db.collection("Categories").document() // Auto-generate ID
+                
+                let categoryData: [String: Any] = [
+                    "name": category.name,
+                    "products": category.products.map { product in
+                        return [
+                            "id": product.id,
+                            "name": product.name,
+                            "pricesLidl": product.pricesLidl,
+                            "pricesKaufland": product.pricesKaufland,
+                            "pricesBilla": product.pricesBilla
+                        ]
+                    }
+                ]
+                
+                try await newDocRef.setData(categoryData)
+                print("Added category: \(category.name) with ID: \(newDocRef.documentID)")
+            }
+        } catch {
+            print("Error adding categories: \(error.localizedDescription)")
+        }
+    }
 }
