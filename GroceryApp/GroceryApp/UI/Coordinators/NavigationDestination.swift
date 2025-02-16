@@ -16,6 +16,7 @@ enum NavigationDestination {
     case shoppingCart(viewModel: ShoppingCartViewModel)
 
     // Profile
+//    case profile(viewModel: ProfileViewModel)
 
 }
 
@@ -45,6 +46,7 @@ extension NavigationDestination: View {
             case let .shoppingCart(viewModel):
 //                ShoppingCartView(viewModel: viewModel)
                 ShoppingCartView()
+            
         }
     }
 }

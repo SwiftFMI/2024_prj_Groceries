@@ -13,6 +13,8 @@ final class AppCoordinator: Coordinator, ObservableObject {
     private lazy var router: Router = {
         Router(appState: AppState())
     }()
+    
+    
 
     @MainActor
     private lazy var contentCoordinator = {

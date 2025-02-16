@@ -25,6 +25,11 @@ final class ContentCoordinator: Coordinator, ObservableObject {
     private lazy var shoppingCartCoordinator: ShoppingCartCoordinator = {
         ShoppingCartCoordinator()
     }()
+    
+//    @MainActor
+//    private lazy var profileCoordinator: ProfileCoordinator = {
+//        ProfileCoordinator()
+//    }
 
     func start() -> some View {
         ContentCoordinatorView(coordinator: self)
