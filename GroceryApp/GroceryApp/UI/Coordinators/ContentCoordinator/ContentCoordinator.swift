@@ -26,10 +26,10 @@ final class ContentCoordinator: Coordinator, ObservableObject {
         ShoppingCartCoordinator()
     }()
     
-//    @MainActor
-//    private lazy var profileCoordinator: ProfileCoordinator = {
-//        ProfileCoordinator()
-//    }
+    @MainActor
+    private lazy var profileCoordinator: ProfileCoordinator = {
+        ProfileCoordinator()
+    }()
 
     func start() -> some View {
         ContentCoordinatorView(coordinator: self)
@@ -43,8 +43,7 @@ final class ContentCoordinator: Coordinator, ObservableObject {
         case .shoppingCart:
             shoppingCartCoordinator.start()
         case .profile:
-//            profileCoordinator.start()
-            Text("Profile")
+            profileCoordinator.start()
         }
     }
 }
