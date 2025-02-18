@@ -27,7 +27,10 @@ struct ContentCoordinatorView: View {
     private func tabItemView(for tab: BottomNavigationTab) -> some View {
         coordinator.tabView(for: tab)
             .tabItem {
-                Text(tab.key)
+                VStack {
+                    tab.image
+                    Text(tab.key)
+                }
             }
             .tag(tab)
             
@@ -43,6 +46,17 @@ private extension BottomNavigationTab {
             "My Cart"
         case .profile:
             "Profile"
+        }
+    }
+
+    var image: Image {
+        switch self {
+        case .home:
+            Image(systemName: "house")
+        case .shoppingCart:
+            Image(systemName: "cart")
+        case .profile:
+            Image(systemName: "person")
         }
     }
 }
