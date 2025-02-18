@@ -7,8 +7,6 @@
 
 import FirebaseAuth
 
-
-
 final class FirebaseAuth {
     private let auth = Auth.auth()
         
@@ -16,7 +14,11 @@ final class FirebaseAuth {
         return auth.currentUser != nil
     }
     
-    func login(email: String, password: String, completion: @escaping (Result<Void, Error>) -> Void) {
+    func login(
+        email: String,
+        password: String,
+        completion: @escaping (Result<Void, Error>) -> Void
+    ) {
         auth.signIn(withEmail: email, password: password) { result, error in
              if let error = error {
                  completion(.failure(error))
@@ -28,9 +30,11 @@ final class FirebaseAuth {
          }
     }
     
-    func register(email: String, password: String,
-                      completion: @escaping (Result<Void, Error>) -> Void) {
-
+    func register(
+        email: String,
+        password: String,
+        completion: @escaping (Result<Void, Error>) -> Void
+    ) {
             auth.createUser(withEmail: email, password: password) { result, error in
                 if let error = error {
                     completion(.failure(error))
@@ -44,4 +48,3 @@ final class FirebaseAuth {
         }
         
 }
-                                              

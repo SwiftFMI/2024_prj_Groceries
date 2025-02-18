@@ -10,15 +10,15 @@ import SwiftUI
 final class AppCoordinator: Coordinator, ObservableObject {
     @MainActor @Published private(set) var initializingAppComponents = false
 
-    private lazy var router: Router = {
-        Router(appState: AppState())
+    private lazy var appState: AppState = {
+        AppState()
     }()
     
     
 
     @MainActor
     private lazy var contentCoordinator = {
-        ContentCoordinator(router: router)
+        ContentCoordinator(appState: appState)
     }()
 
     init() {}
