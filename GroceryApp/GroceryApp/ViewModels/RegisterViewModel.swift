@@ -24,34 +24,23 @@ import SwiftUI
     @Published var errorText = "Error while registering"
     
     @Published var email = ""
-
     @Published var isEmailValid = true
     @Published var emailErrorMessage = ""
     
+    @Published var username = ""
+    @Published var isUsernameValid = true
+    @Published var usernameErrorMessage = ""
+    
     func validateEmail(email: String) {
-        let emailRegex = #"^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$"#
-        let predicate = NSPredicate(format: "SELF MATCHES[c] %@", emailRegex)
-        isEmailValid = predicate.evaluate(with: email)
-
-        emailErrorMessage = isEmailValid ? "" : "Invalid email format"
+        let res = Validators().validateEmail(email: email)
+        isEmailValid = res.0
+        emailErrorMessage = res.1
     }
     
     func validatePass(pass: String){
-        if pass.count < 6 {
-            isPassValid = false
-            passErrorMessage = "The password must be at least 6 characters"
-            return
-        }
-        else if !pass.contains(where: { ch in ch.isNumber }) {
-            isPassValid = false
-            passErrorMessage = "The password must contain at least 1 number"
-            return
-        }
-        
-        isPassValid = true
-        
-        passErrorMessage = isPassValid ? "" : "Invalid password format"
-        
+        let res = Validators().validatePass(pass: pass)
+        isPassValid = res.0
+        passErrorMessage = res.1
     }
     
     func passwordsMatch(confirmPass: String){
@@ -62,13 +51,19 @@ import SwiftUI
         }
         
         arePasswordsMatching = true
-        confirmPassErrorMessage = arePasswordsMatching ? "" :"The passwords don't match"
+        confirmPassErrorMessage = ""
         
+    }
+    
+    func validateUsername(userName: String){
+        let res = Validators().validateUsername(userName: userName)
+        isUsernameValid = res.0
+        usernameErrorMessage = res.1
     }
     
     
     func register() {
-        auth.register(email: email, password: password) { result in
+        auth.register(email: email, password: password, name: username) { result in
             switch result {
             case .success:
                 // Move to profile page

@@ -16,14 +16,24 @@ struct RegisterView: View {
                .font(.system(size: 50))
                .fontWeight(.heavy)
                .padding(.top)
+            
+            TextEditView(
+                text: $vm.username,
+                isTextValid: $vm.isUsernameValid,
+                validateText: { uName in
+                    vm.validateUsername(userName: uName)
+                },
+                textErrorMessage: $vm.usernameErrorMessage,
+                placeHolder: "Username"
+            )
 
-            EmailTextView(
-                email: $vm.email,
-                isEmailValid: $vm.isEmailValid,
-                validateEmail: { email in
+            TextEditView(
+                text: $vm.email,
+                isTextValid: $vm.isEmailValid,
+                validateText: { email in
                     vm.validateEmail(email: email)
                 },
-                emailErrorMessage: $vm.emailErrorMessage
+                textErrorMessage: $vm.emailErrorMessage
             )
             
             PasswordTextView(
@@ -62,34 +72,39 @@ struct RegisterView: View {
             .alert("Error while registering", isPresented: $vm.errorOnRegister) {
                 Button("OK", role: .cancel) { }
             }
+            Spacer()
         }
         .padding(.horizontal, 24)
         .padding(.top, 32)
+        
+        
     }
 }
 
 
-struct EmailTextView: View {
+struct TextEditView: View {
     
-    @Binding var email: String
-    @Binding var isEmailValid : Bool
-    var validateEmail: (_ email: String) -> Void
-    @Binding var emailErrorMessage : String
+    @Binding var text: String
+    @Binding var isTextValid : Bool
+    var validateText: (_ email: String) -> Void = {_ in }
+    @Binding var textErrorMessage : String
+    
+    var placeHolder: String = "Email"
     
     var body : some View {
         VStack(alignment: .leading, spacing: 8) {
-            TextField("Email", text: $email)
-                .onChange(of: email, perform: { newValue in
-                    validateEmail(newValue)
+            TextField(placeHolder, text: $text)
+                .onChange(of: text, perform: { newValue in
+                    validateText(newValue)
                 })
                 .padding()
                 .background(Color.white)
                 .cornerRadius(8)
                 .overlay(RoundedRectangle(cornerRadius: 8)
-                    .stroke(!isEmailValid ? Color.red : Color(.systemBlue), lineWidth: 1))
+                    .stroke(!isTextValid ? Color.red : Color(.systemBlue), lineWidth: 1))
             
-            if !isEmailValid {
-                Text(emailErrorMessage)
+            if !isTextValid {
+                Text(textErrorMessage)
                     .foregroundColor(.red)
                     .font(.footnote)
             }
