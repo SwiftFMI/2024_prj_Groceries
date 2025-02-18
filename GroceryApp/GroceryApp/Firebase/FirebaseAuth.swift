@@ -30,6 +30,17 @@ final class FirebaseAuth {
          }
     }
     
+    func logout(completion: @escaping (Result<Bool, Error>) -> Void) {
+            do {
+                try auth.signOut()
+            } catch {
+                print("Couldn't log out!")
+                completion(.failure(Errors.LogoutFailed))
+            }
+            completion(.success(true))
+        }
+
+    
     func register(
         email: String,
         password: String,
@@ -101,7 +112,4 @@ final class FirebaseAuth {
                 }
             }
         }
-
-
-        
 }

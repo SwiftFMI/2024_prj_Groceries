@@ -9,4 +9,5 @@ enum Errors : Error{
     case UserNameUpdateFailed
     case RegisterFailed
     case EmailUpdateFailed
+    case LogoutFailed
 }
