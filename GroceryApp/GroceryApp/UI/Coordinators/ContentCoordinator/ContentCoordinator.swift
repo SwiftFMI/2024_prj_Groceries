@@ -10,10 +10,10 @@ import SwiftUI
 final class ContentCoordinator: Coordinator, ObservableObject {
 
     let tabBarItems: [BottomNavigationTab] = [.home, .shoppingCart, .profile]
-    var router: Router
+    var appState: AppState
 
-    init(router: Router) {
-        self.router = router
+    init(appState: AppState) {
+        self.appState = appState
     }
 
     @MainActor

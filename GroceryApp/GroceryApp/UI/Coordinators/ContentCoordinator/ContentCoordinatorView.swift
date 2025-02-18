@@ -18,7 +18,7 @@ struct ContentCoordinatorView: View {
     }
 
     private var tabView: some View {
-        TabView(selection: $coordinator.router.appState.selectedBottomNavigationTab) {
+        TabView(selection: $coordinator.appState.selectedBottomNavigationTab) {
             ForEach(coordinator.tabBarItems, id: \.self) { tab in
                 tabItemView(for: tab)
             }
