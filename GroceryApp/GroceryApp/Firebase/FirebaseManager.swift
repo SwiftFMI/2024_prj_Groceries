@@ -28,12 +28,13 @@ class FireStoreManager: ObservableObject {
     
     func fetchCategories() async {
         do {
-            guard let categories = try await db?.collection("Categories").getDocuments(source: .cache) else {
+            guard let categoriesDoc = try await db?.collection("Categories").getDocuments(source: .default) else {
                 print("No information!")
                 return
             }
 
-            for document in categories.documents {
+            var categories: [Category] = []
+            for document in categoriesDoc.documents {
                 let data = document.data()
                 let name = data["name"] as? String ?? "Unknown Category"
                 let id = document.documentID
@@ -51,8 +52,9 @@ class FireStoreManager: ObservableObject {
 
                 let category = Category(id: id, name: name, products: products)
                 print("Fetched: \(category)")
-                fetchedCategories.append(category)
+                categories.append(category)
             }
+            fetchedCategories = categories
 
         } catch {
           print("Error getting documents: \(error)")

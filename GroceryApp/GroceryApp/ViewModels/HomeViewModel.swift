@@ -9,7 +9,7 @@ import Combine
 import SwiftUI
 
 final class HomeViewModel: ObservableObject {
-    @Published private(set) var categories = [Category]()
+    @Published private(set) var categories: [Category] = []
     @Published var currentSectionIndex: Int = 0
 
     let presentPicker: PresentSectionPicker
@@ -48,6 +48,7 @@ final class HomeViewModel: ObservableObject {
                 guard let self = self else {
                     return
                 }
+                print("± \(categories)")
                 self.categories = categories
             }
             .store(in: &cancellables)

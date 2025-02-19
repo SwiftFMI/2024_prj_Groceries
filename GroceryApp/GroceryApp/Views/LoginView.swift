@@ -9,8 +9,8 @@ import SwiftUI
 
 struct LoginView: View {
     
-    @StateObject var vm: LoginViewModel = LoginViewModel()
-    
+    @StateObject var viewModel: LoginViewModel
+
     var body: some View {
         VStack(spacing: 32) {
             Spacer()
@@ -20,27 +20,27 @@ struct LoginView: View {
                .padding(.top)
 
             TextEditView(
-                text: $vm.email,
-                isTextValid: $vm.isEmailValid,
+                text: $viewModel.email,
+                isTextValid: $viewModel.isEmailValid,
                 validateText: { email in
-                    vm.validateEmail(email: email)
+                    viewModel.validateEmail(email: email)
                 },
-                textErrorMessage: $vm.emailErrorMessage
+                textErrorMessage: $viewModel.emailErrorMessage
             )
             
             PasswordTextView(
-                pass: $vm.password,
-                isPassValid: $vm.isPassValid,
+                pass: $viewModel.password,
+                isPassValid: $viewModel.isPassValid,
                 validatePass: { pass in
-                    vm.validatePass(pass: pass)
+                    viewModel.validatePass(pass: pass)
                 },
-                passErrorMessage: $vm.passErrorMessage,
+                passErrorMessage: $viewModel.passErrorMessage,
                 confirmPass: false
             )
             
             
             Button(action: {
-                vm.login()
+                viewModel.login()
             }) {
                 Text("Login")
                     .frame(maxWidth: .infinity)
@@ -50,7 +50,7 @@ struct LoginView: View {
                     .cornerRadius(8)
                     .font(.headline)
             }
-            .alert("Error while logging in", isPresented: $vm.errorOnLogin) {
+            .alert("Error while logging in", isPresented: $viewModel.errorOnLogin) {
                 Button("OK", role: .cancel) { }
             }
             Spacer()
