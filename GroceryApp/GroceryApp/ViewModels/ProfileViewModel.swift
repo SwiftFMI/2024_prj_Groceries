@@ -6,6 +6,8 @@
 //
 
 import SwiftUI
+import Combine
+import FirebaseAuth
 
 final class ProfileViewModel: ObservableObject {
     
@@ -13,18 +15,27 @@ final class ProfileViewModel: ObservableObject {
          toLogin: @escaping () -> Void,
          toRegister: @escaping () -> Void){
         self.auth = auth
-        self.email = auth.currentUser?.email ?? ""
-        self.username = auth.currentUser?.displayName ?? ""
         self.isUserLogged = auth.isLoggedIn()
+        self.user = auth.currentUser
         self.toLogin = toLogin
         self.toRegister = toRegister
         observeAuthChanges()
     }
+    
+    private var cancellables = Set<AnyCancellable>()
+
             
     private func observeAuthChanges() {
-        auth.authStatePublisher()
-            .receive(on: DispatchQueue.main)
-            .assign(to: &$isUserLogged)
+            auth.authStatePublisher()
+                .receive(on: DispatchQueue.main)
+                .sink { [weak self] isLogged, user in
+                    self?.isUserLogged = isLogged
+                    self?.user = user
+                    self?.email = user?.email ?? ""
+                    self?.username = user?.displayName ?? ""
+                    
+                }
+                .store(in: &cancellables)
     }
     
     private let auth: FirebaseAuth
@@ -33,17 +44,18 @@ final class ProfileViewModel: ObservableObject {
     let toRegister: () -> Void
 
     
-    @Published var isUserLogged: Bool 
+    @Published var isUserLogged: Bool
+    var user: User?
     
 
     @Published var isEmailEdited = false
     @Published var isUserNameEdited = false
     
-    @Published var email : String
+    @Published var email : String = ""
     @Published var isEmailValid = true
     @Published var emailErrorMessage = ""
     
-    @Published var username : String
+    @Published var username : String = ""
     @Published var isUsernameValid = true
     @Published var usernameErrorMessage = ""
     

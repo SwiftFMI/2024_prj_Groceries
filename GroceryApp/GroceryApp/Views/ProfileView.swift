@@ -31,7 +31,10 @@ struct ProfileView: View {
                 if (vm.isUserLogged) {
                     infoView
                 } else {
-                    emptyView
+                    ButtonsToAuth(
+                        toLogin: vm.toLogin,
+                        toRegister: vm.toRegister
+                    )
                 }
                 
             }
@@ -140,34 +143,39 @@ struct ProfileView: View {
             }
         }
     }
+}
+
+struct ButtonsToAuth: View {
+    let toLogin: () -> Void
+    let toRegister: () -> Void
     
-    var emptyView: some View {
-        VStack(spacing: 24){
-            Button(action: {
-                vm.toLogin()
-            }) {
-                Text("Login")
-                    .font(.headline)
-                    .frame(maxWidth: .infinity)
-                    .padding()
-                    .background(vm.isEditing ? Color.green : Color.blue)
-                    .foregroundColor(.white)
-                    .cornerRadius(10)
-                    .padding([.leading, .trailing], 20)
-            }
-            Button(action: {
-                vm.toRegister()
-            }) {
-                Text("Register")
-                    .font(.headline)
-                    .frame(maxWidth: .infinity)
-                    .padding()
-                    .background(vm.isEditing ? Color.green : Color.blue)
-                    .foregroundColor(.white)
-                    .cornerRadius(10)
-                    .padding([.leading, .trailing], 20)
+    var body: some View{
+            VStack(spacing: 24){
+                Button(action: {
+                    toLogin()
+                }) {
+                    Text("Login")
+                        .font(.headline)
+                        .frame(maxWidth: .infinity)
+                        .padding()
+                        .background(Color.blue)
+                        .foregroundColor(.white)
+                        .cornerRadius(10)
+                        .padding([.leading, .trailing], 20)
+                }
+                Button(action: {
+                    toRegister()
+                }) {
+                    Text("Register")
+                        .font(.headline)
+                        .frame(maxWidth: .infinity)
+                        .padding()
+                        .background(Color.blue)
+                        .foregroundColor(.white)
+                        .cornerRadius(10)
+                        .padding([.leading, .trailing], 20)
+                }
             }
         }
-    }
 }
 

@@ -122,10 +122,10 @@ final class FirebaseAuth {
         }
     }
     
-    func authStatePublisher() -> AnyPublisher<Bool, Never> {
-            let publisher = PassthroughSubject<Bool, Never>()
-            auth.addStateDidChangeListener { _, _ in
-                publisher.send(self.isLoggedIn())
+    func authStatePublisher() -> AnyPublisher<(Bool, User?), Never> {
+            let publisher = PassthroughSubject<(Bool, User?), Never>()
+            auth.addStateDidChangeListener { _, user in
+                publisher.send((self.isLoggedIn(), user))
             }
             return publisher.eraseToAnyPublisher()
         }

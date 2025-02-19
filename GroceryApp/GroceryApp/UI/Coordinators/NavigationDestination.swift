@@ -18,10 +18,8 @@ enum NavigationDestination {
     // Profile
     case profile(viewModel: ProfileViewModel)
     
-    //Login
+    // Shared
     case login(viewModel: LoginViewModel)
-    
-    //Register
     case register(viewModel: RegisterViewModel)
 
 }
@@ -55,8 +53,7 @@ extension NavigationDestination: View {
             case let .home(viewModel):
                 HomeView(viewModel: viewModel)
             case let .shoppingCart(viewModel):
-//                ShoppingCartView(viewModel: viewModel)
-                ShoppingCartView()
+                ShoppingCartView(viewModel: viewModel)
             case let .profile(viewModel):
             ProfileView(vm: viewModel)
             case let .login(viewModel):
