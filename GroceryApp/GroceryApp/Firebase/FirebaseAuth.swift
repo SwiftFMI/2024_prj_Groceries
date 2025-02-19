@@ -69,7 +69,7 @@ final class FirebaseAuth {
     func editUserName(
         userName: String,
         completion: @escaping (Result<Void, Error>) -> Void
-    ){
+    ) {
         guard let user = auth.currentUser else {
             completion(.failure(Errors.UserNameUpdateFailed))
                     return

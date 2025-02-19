@@ -22,6 +22,9 @@ struct ContentCoordinatorView: View {
                 tabItemView(for: tab)
             }
         }
+        .onAppear {
+            UITabBar.appearance().backgroundColor = UIColor.systemGray4
+        }
     }
 
     private func tabItemView(for tab: BottomNavigationTab) -> some View {
@@ -33,7 +36,6 @@ struct ContentCoordinatorView: View {
                 }
             }
             .tag(tab)
-            
     }
 }
 

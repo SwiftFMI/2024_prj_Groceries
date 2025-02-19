@@ -8,8 +8,22 @@
 import SwiftUI
 
 struct HomeView: View {
+
+    @StateObject var viewModel: HomeViewModel
+
     var body: some View {
         Text("Home View")
-        ProfileView()
+            .navigationBarBackButtonHidden(true)
+            .navigationTitle(viewModel.sectionName ?? "")
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                ToolbarItem(placement: .topBarLeading) {
+                    Button(action: {
+                        print("Clicked")
+                    }, label: {
+                        Text("Categories")
+                    })
+                }
+            }
     }
 }

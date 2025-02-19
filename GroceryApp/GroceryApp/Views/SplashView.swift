@@ -11,7 +11,7 @@ struct SplashView: View {
 
     var body: some View {
         VStack {
-            Image("") // TODO: Change to our own image
+            Image("Dog")
                 .renderingMode(.template)
                 .resizable()
                 .aspectRatio(contentMode: .fit)

@@ -41,8 +41,7 @@ extension NavigationDestination: View {
     var body: some View {
         switch self {
             case let .home(viewModel):
-//                HomeView(viewModel: viewModel)
-                HomeView()
+                HomeView(viewModel: viewModel)
             case let .shoppingCart(viewModel):
 //                ShoppingCartView(viewModel: viewModel)
                 ShoppingCartView()
