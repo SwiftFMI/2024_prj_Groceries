@@ -72,6 +72,6 @@ final class ProfileCoordinator: ObservableObject, Coordinator{
     }
     
     private func transitionToProfile(){
-        path = [self.profileDestination()]
+        path.removeAll()
     }
 }

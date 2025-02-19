@@ -6,6 +6,7 @@
 //
 
 import FirebaseAuth
+import Combine
 
 final class FirebaseAuth {
     private let auth = Auth.auth()
@@ -120,4 +121,12 @@ final class FirebaseAuth {
             }
         }
     }
+    
+    func authStatePublisher() -> AnyPublisher<Bool, Never> {
+            let publisher = PassthroughSubject<Bool, Never>()
+            auth.addStateDidChangeListener { _, _ in
+                publisher.send(self.isLoggedIn())
+            }
+            return publisher.eraseToAnyPublisher()
+        }
 }

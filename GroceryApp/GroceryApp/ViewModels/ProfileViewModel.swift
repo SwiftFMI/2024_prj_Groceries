@@ -18,7 +18,13 @@ final class ProfileViewModel: ObservableObject {
         self.isUserLogged = auth.isLoggedIn()
         self.toLogin = toLogin
         self.toRegister = toRegister
-
+        observeAuthChanges()
+    }
+            
+    private func observeAuthChanges() {
+        auth.authStatePublisher()
+            .receive(on: DispatchQueue.main)
+            .assign(to: &$isUserLogged)
     }
     
     private let auth: FirebaseAuth
@@ -27,7 +33,7 @@ final class ProfileViewModel: ObservableObject {
     let toRegister: () -> Void
 
     
-    @Published var isUserLogged: Bool
+    @Published var isUserLogged: Bool 
     
 
     @Published var isEmailEdited = false
