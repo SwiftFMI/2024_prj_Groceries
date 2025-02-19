@@ -5,6 +5,7 @@
 //  Created by Zlatina Lilova on 13.02.25.
 //
 
+import Combine
 import Firebase
 import FirebaseFirestore
 
@@ -12,6 +13,10 @@ class FireStoreManager: ObservableObject {
     var db: Firestore?
     
     @Published var fetchedCategories: [Category] = []
+
+    var updatesPublisher: AnyPublisher<[Category], Never> { $fetchedCategories.eraseToAnyPublisher() }
+
+    private var cancellables = Set<AnyCancellable>()
 
     func connect() {
         db = Firestore.firestore()
@@ -27,8 +32,7 @@ class FireStoreManager: ObservableObject {
                 print("No information!")
                 return
             }
-            
-            
+
             for document in categories.documents {
                 let data = document.data()
                 let name = data["name"] as? String ?? "Unknown Category"
@@ -49,7 +53,7 @@ class FireStoreManager: ObservableObject {
                 print("Fetched: \(category)")
                 fetchedCategories.append(category)
             }
-            
+
         } catch {
           print("Error getting documents: \(error)")
         }
