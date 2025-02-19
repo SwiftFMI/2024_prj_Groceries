@@ -17,6 +17,12 @@ enum NavigationDestination {
 
     // Profile
     case profile(viewModel: ProfileViewModel)
+    
+    //Login
+    case login(viewModel: LoginViewModel)
+    
+    //Register
+    case register(viewModel: RegisterViewModel)
 
 }
 
@@ -30,6 +36,12 @@ extension NavigationDestination: Hashable {
             case let (.home(lhsVM), .home(rhsVM)):
             lhsVM === rhsVM
         case let (.shoppingCart(lhsVM), .shoppingCart(rhsVM)):
+            lhsVM === rhsVM
+        case let (.register(lhsVM), .register(rhsVM)):
+            lhsVM === rhsVM
+        case let (.login(lhsVM), .login(rhsVM)):
+            lhsVM === rhsVM
+        case let (.profile(lhsVM), .profile(rhsVM)):
             lhsVM === rhsVM
         default:
             false
@@ -45,8 +57,13 @@ extension NavigationDestination: View {
             case let .shoppingCart(viewModel):
 //                ShoppingCartView(viewModel: viewModel)
                 ShoppingCartView()
-        case let .profile(viewModel: viewModel):
-            ProfileView()
+            case let .profile(viewModel):
+            ProfileView(vm: viewModel)
+            case let .login(viewModel):
+                LoginView(viewModel: viewModel)
+            case let .register(viewModel):
+                RegisterView(vm: viewModel)
+            
         }
     }
 }

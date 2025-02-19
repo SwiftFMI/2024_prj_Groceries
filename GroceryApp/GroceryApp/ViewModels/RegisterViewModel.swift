@@ -7,9 +7,16 @@
 
 import SwiftUI
 
-@MainActor final class RegisterViewModel: ObservableObject {
+final class RegisterViewModel: ObservableObject {
     
-    private lazy var auth = FirebaseAuth()
+    init(auth: FirebaseAuth, onSuccessRegister: @escaping () -> Void){
+        self.auth = auth
+        self.onSuccessRegister = onSuccessRegister
+    }
+    
+    private let auth : FirebaseAuth
+    
+    let onSuccessRegister: () -> Void
     
     
     @Published var password = ""
@@ -66,7 +73,7 @@ import SwiftUI
         auth.register(email: email, password: password, name: username) { result in
             switch result {
             case .success:
-                // Move to profile page
+                self.onSuccessRegister()
                 self.errorOnRegister = false
                 print(self.auth.isLoggedIn())
             case .failure:

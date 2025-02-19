@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct ProfileView: View {
-    @ObservedObject var vm = ProfileViewModel()
+    @ObservedObject var vm : ProfileViewModel
     
     let userImage = Image(systemName: "person.circle.fill")
     
@@ -27,6 +27,18 @@ struct ProfileView: View {
                 .overlay(Circle().stroke(Color.white, lineWidth: 4))
                 .shadow(radius: 10)
             
+            if (vm.isUserLogged) {
+                infoView
+            } else {
+                emptyView
+            }
+            
+        }
+        .padding(24)
+    }
+    
+    var infoView: some View {
+        VStack {
             VStack(alignment: .leading, spacing: 32){
                 VStack(alignment: .leading) {
                     Text("Username")
@@ -104,15 +116,44 @@ struct ProfileView: View {
             }.alert(vm.errorText, isPresented: $vm.errorOnEdit) {
                 Button("OK", role: .cancel) { }
             }
+            
+            Button {
+                vm.logout()
+            } label: {
+                Text("Logout")
+            }
+
+
         }
-        .padding(24)
+    }
+    
+    var emptyView: some View {
+        VStack(spacing: 24){
+            Button(action: {
+                vm.toLogin()
+            }) {
+                Text("Login")
+                    .font(.headline)
+                    .frame(maxWidth: .infinity)
+                    .padding()
+                    .background(vm.isEditing ? Color.green : Color.blue)
+                    .foregroundColor(.white)
+                    .cornerRadius(10)
+                    .padding([.leading, .trailing], 20)
+            }
+            Button(action: {
+                vm.toRegister()
+            }) {
+                Text("Register")
+                    .font(.headline)
+                    .frame(maxWidth: .infinity)
+                    .padding()
+                    .background(vm.isEditing ? Color.green : Color.blue)
+                    .foregroundColor(.white)
+                    .cornerRadius(10)
+                    .padding([.leading, .trailing], 20)
+            }
+        }
     }
 }
 
-struct ProfileView_Previews: PreviewProvider {
-    static var previews: some View {
-        ProfileView()
-            .previewDevice("iPhone 14")
-            .preferredColorScheme(.light) // Preview with Light mode
-    }
-}

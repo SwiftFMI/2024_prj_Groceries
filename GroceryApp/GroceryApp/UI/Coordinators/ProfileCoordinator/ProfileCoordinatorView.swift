@@ -14,7 +14,7 @@ struct ProfileCoordinatorView: View {
     var body: some View {
         NavigationStack(path: $coordinator.path) {
             coordinator.initialDestination
-                .navigationDestination(for: ProfileDestionation.self) { $0 }
+                .navigationDestination(for: ProfileDestination.self) { $0 }
                 .navigationBarTitleDisplayMode(.inline)
         }
     }

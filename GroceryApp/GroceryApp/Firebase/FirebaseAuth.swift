@@ -9,6 +9,12 @@ import FirebaseAuth
 
 final class FirebaseAuth {
     private let auth = Auth.auth()
+    
+    var currentUser: User?
+    
+    init(){
+        currentUser = auth.currentUser ?? nil
+    }
 
     func isLoggedIn() -> Bool {
         return auth.currentUser != nil
@@ -25,6 +31,7 @@ final class FirebaseAuth {
                 return
             }
             DispatchQueue.main.async {
+                self.currentUser = self.auth.currentUser
                 completion(.success(()))
             }
         }
@@ -61,6 +68,7 @@ final class FirebaseAuth {
                 }
             }
             DispatchQueue.main.async {
+                self.currentUser = self.auth.currentUser
                 completion(.success(()))
             }
         }
