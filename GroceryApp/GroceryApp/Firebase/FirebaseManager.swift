@@ -14,7 +14,7 @@ class FireStoreManager: ObservableObject {
     
     @Published var fetchedCategories: [Category] = []
 
-    var updatesPublisher: AnyPublisher<[Category], Never> { $fetchedCategories.eraseToAnyPublisher() }
+    var categoriesPublisher: AnyPublisher<[Category], Never> { $fetchedCategories.eraseToAnyPublisher() }
 
     private var cancellables = Set<AnyCancellable>()
 

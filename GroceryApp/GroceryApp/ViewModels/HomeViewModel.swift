@@ -5,6 +5,7 @@
 //  Created by Nikolay Dinkov on 14.02.25.
 //
 
+import Combine
 import SwiftUI
 
 final class HomeViewModel: ObservableObject {
@@ -12,15 +13,20 @@ final class HomeViewModel: ObservableObject {
     @Published var currentSectionIndex: Int = 0
 
     let presentPicker: PresentSectionPicker
+    let firebaseManager: FireStoreManager
+
+    private var cancellables: Set<AnyCancellable> = []
 
     init(
-        categories: [Category] = [Category](),
+        firebaseManager: FireStoreManager,
         currentSectionIndex: Int,
         presentPicker: @escaping PresentSectionPicker
     ) {
-        self.categories = categories
+        self.firebaseManager = firebaseManager
         self.currentSectionIndex = currentSectionIndex
         self.presentPicker = presentPicker
+
+
     }
 
     var sectionName: String? {
@@ -32,5 +38,18 @@ final class HomeViewModel: ObservableObject {
             return nil
         }
         return categories[currentSectionIndex]
+    }
+
+    private func configureCategoriesPublisher() {
+        firebaseManager
+            .categoriesPublisher
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] categories in
+                guard let self = self else {
+                    return
+                }
+                self.categories = categories
+            }
+            .store(in: &cancellables)
     }
 }

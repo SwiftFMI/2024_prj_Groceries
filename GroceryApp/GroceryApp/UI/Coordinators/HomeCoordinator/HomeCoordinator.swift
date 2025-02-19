@@ -14,9 +14,9 @@ final class HomeCoordinator: Coordinator, ObservableObject {
     var initialDestination: HomeDestination!
 
     @MainActor
-    init() {
+    init(firebaseManager: FireStoreManager) {
         let homeViewModel = HomeViewModel(
-            categories: [],
+            firebaseManager: firebaseManager,
             currentSectionIndex: 0,
             presentPicker: { [weak self] items, currentCategoryId, onChanged in
                 self?.presentPicker(with: items, currentCategoryId: currentCategoryId, onItemPicked: onChanged)

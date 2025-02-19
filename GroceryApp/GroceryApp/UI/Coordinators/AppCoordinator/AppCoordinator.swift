@@ -24,7 +24,10 @@ final class AppCoordinator: Coordinator, ObservableObject {
 
     @MainActor
     private lazy var contentCoordinator = {
-        ContentCoordinator(appState: appState)
+        ContentCoordinator(
+            appState: appState,
+            firebaseManager: firebaseManager
+        )
     }()
 
     init() {
