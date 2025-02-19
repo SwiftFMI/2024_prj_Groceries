@@ -9,12 +9,19 @@ import SwiftUI
 
 final class HomeCoordinator: Coordinator, ObservableObject {
     @Published var path = [HomeDestination]()
+    @Published var sheetCoordinator: IdentifiableCoordinator?
 
-    var initialDestination: HomeDestination
+    var initialDestination: HomeDestination!
 
     @MainActor
-    init() {
-        let homeViewModel = HomeViewModel()
+    init(firebaseManager: FireStoreManager) {
+        let homeViewModel = HomeViewModel(
+            firebaseManager: firebaseManager,
+            currentSectionIndex: 0,
+            presentPicker: { [weak self] items, currentCategoryId, onChanged in
+                self?.presentPicker(with: items, currentCategoryId: currentCategoryId, onItemPicked: onChanged)
+            }
+        )
 
         self.initialDestination = .home(viewModel: homeViewModel)
     }
@@ -23,3 +30,5 @@ final class HomeCoordinator: Coordinator, ObservableObject {
         HomeCoordinatorView(coordinator: self)
     }
 }
+
+extension HomeCoordinator: PickerPresentable {}

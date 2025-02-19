@@ -10,20 +10,30 @@ import SwiftUI
 final class ContentCoordinator: Coordinator, ObservableObject {
 
     let tabBarItems: [BottomNavigationTab] = [.home, .shoppingCart, .profile]
-    var router: Router
+    var appState: AppState
+    var firebaseManager: FireStoreManager
 
-    init(router: Router) {
-        self.router = router
+    init(
+        appState: AppState,
+        firebaseManager: FireStoreManager
+    ) {
+        self.appState = appState
+        self.firebaseManager = firebaseManager
     }
 
     @MainActor
     private lazy var homeCoordinator: HomeCoordinator = {
-        HomeCoordinator()
+        HomeCoordinator(firebaseManager: firebaseManager)
     }()
 
     @MainActor
     private lazy var shoppingCartCoordinator: ShoppingCartCoordinator = {
         ShoppingCartCoordinator()
+    }()
+    
+    @MainActor
+    private lazy var profileCoordinator: ProfileCoordinator = {
+        ProfileCoordinator()
     }()
 
     func start() -> some View {
@@ -38,8 +48,7 @@ final class ContentCoordinator: Coordinator, ObservableObject {
         case .shoppingCart:
             shoppingCartCoordinator.start()
         case .profile:
-//            profileCoordinator.start()
-            Text("Profile")
+            profileCoordinator.start()
         }
     }
 }

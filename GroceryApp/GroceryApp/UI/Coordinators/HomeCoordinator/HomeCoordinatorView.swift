@@ -16,5 +16,8 @@ struct HomeCoordinatorView: View {
                 .navigationDestination(for: HomeDestination.self) { $0 }
                 .navigationBarTitleDisplayMode(.inline)
         }
+        .sheet(item: $coordinator.sheetCoordinator) { coordinator in
+            coordinator.start()
+        }
     }
 }
