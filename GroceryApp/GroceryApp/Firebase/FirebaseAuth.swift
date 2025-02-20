@@ -6,9 +6,16 @@
 //
 
 import FirebaseAuth
+import Combine
 
 final class FirebaseAuth {
     private let auth = Auth.auth()
+    
+    var currentUser: User?
+    
+    init(){
+        currentUser = auth.currentUser ?? nil
+    }
 
     func isLoggedIn() -> Bool {
         return auth.currentUser != nil
@@ -25,6 +32,7 @@ final class FirebaseAuth {
                 return
             }
             DispatchQueue.main.async {
+                self.currentUser = self.auth.currentUser
                 completion(.success(()))
             }
         }
@@ -61,6 +69,7 @@ final class FirebaseAuth {
                 }
             }
             DispatchQueue.main.async {
+                self.currentUser = self.auth.currentUser
                 completion(.success(()))
             }
         }
@@ -112,4 +121,12 @@ final class FirebaseAuth {
             }
         }
     }
+    
+    func authStatePublisher() -> AnyPublisher<(Bool, User?), Never> {
+            let publisher = PassthroughSubject<(Bool, User?), Never>()
+            auth.addStateDidChangeListener { _, user in
+                publisher.send((self.isLoggedIn(), user))
+            }
+            return publisher.eraseToAnyPublisher()
+        }
 }

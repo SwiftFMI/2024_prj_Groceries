@@ -8,25 +8,42 @@
 import SwiftUI
 
 struct ProfileView: View {
-    @ObservedObject var vm = ProfileViewModel()
+    @ObservedObject var vm : ProfileViewModel
     
     let userImage = Image(systemName: "person.circle.fill")
     
     var body: some View {
-        VStack(alignment: .center, spacing: 32) {
-            Text("Profile")
-               .font(.system(size: 50))
-               .fontWeight(.heavy)
-               .padding(.top)
-            
-            userImage
-                .resizable()
-                .scaledToFill()
-                .frame(width: 120, height: 120)
-                .clipShape(Circle())
-                .overlay(Circle().stroke(Color.white, lineWidth: 4))
-                .shadow(radius: 10)
-            
+        ScrollView{
+            VStack(alignment: .center, spacing: 32) {
+                Text("Profile")
+                    .font(.system(size: 50))
+                    .fontWeight(.heavy)
+                    .padding(.top)
+                
+                userImage
+                    .resizable()
+                    .scaledToFill()
+                    .frame(width: 120, height: 120)
+                    .clipShape(Circle())
+                    .overlay(Circle().stroke(Color.white, lineWidth: 4))
+                    .shadow(radius: 10)
+                
+                if (vm.isUserLogged) {
+                    infoView
+                } else {
+                    ButtonsToAuth(
+                        toLogin: vm.toLogin,
+                        toRegister: vm.toRegister
+                    )
+                }
+                
+            }
+            .padding(24)
+        }
+    }
+    
+    var infoView: some View {
+        VStack(alignment: .leading, spacing: 32) {
             VStack(alignment: .leading, spacing: 32){
                 VStack(alignment: .leading) {
                     Text("Username")
@@ -85,13 +102,15 @@ struct ProfileView: View {
                     }
                 }
                 
-            }
+            }.padding(.horizontal, 24)
             
             Button(action: {
                 if vm.isEditing {
                     vm.save()
                 }
-                vm.isEditing.toggle()
+                withAnimation{
+                    vm.isEditing.toggle()
+                }
             }) {
                 Text(vm.isEditing ? "Save" : "Edit Profile")
                     .font(.headline)
@@ -104,15 +123,59 @@ struct ProfileView: View {
             }.alert(vm.errorText, isPresented: $vm.errorOnEdit) {
                 Button("OK", role: .cancel) { }
             }
+            
+            if !vm.isEditing{
+                Button(action: {
+                    vm.logout()
+                }) {
+                    Text("Logout")
+                        .font(.headline)
+                        .frame(maxWidth: .infinity)
+                        .padding()
+                        .background(vm.isEditing ? Color.green : Color.blue)
+                        .foregroundColor(.white)
+                        .cornerRadius(10)
+                        .padding([.leading, .trailing], 20)
+                }.alert(vm.errorText, isPresented: $vm.errorOnLogout) {
+                    Button("OK", role: .cancel) { }
+                }
+                
+            }
         }
-        .padding(24)
     }
 }
 
-struct ProfileView_Previews: PreviewProvider {
-    static var previews: some View {
-        ProfileView()
-            .previewDevice("iPhone 14")
-            .preferredColorScheme(.light) // Preview with Light mode
-    }
+struct ButtonsToAuth: View {
+    let toLogin: () -> Void
+    let toRegister: () -> Void
+    
+    var body: some View{
+            VStack(spacing: 24){
+                Button(action: {
+                    toLogin()
+                }) {
+                    Text("Login")
+                        .font(.headline)
+                        .frame(maxWidth: .infinity)
+                        .padding()
+                        .background(Color.blue)
+                        .foregroundColor(.white)
+                        .cornerRadius(10)
+                        .padding([.leading, .trailing], 20)
+                }
+                Button(action: {
+                    toRegister()
+                }) {
+                    Text("Register")
+                        .font(.headline)
+                        .frame(maxWidth: .infinity)
+                        .padding()
+                        .background(Color.blue)
+                        .foregroundColor(.white)
+                        .cornerRadius(10)
+                        .padding([.leading, .trailing], 20)
+                }
+            }
+        }
 }
+

@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct ProfileDestionation {
+struct ProfileDestination {
     private let destination: NavigationDestination
 
     private init(destination: NavigationDestination) {
@@ -17,11 +17,19 @@ struct ProfileDestionation {
     static func profile(viewModel: ProfileViewModel) -> Self {
         .init(destination: .profile(viewModel: viewModel))
     }
+    
+    static func login(viewModel: LoginViewModel) -> Self {
+        .init(destination: .login(viewModel: viewModel))
+    }
+    
+    static func register(viewModel: RegisterViewModel) -> Self {
+        .init(destination: .register(viewModel: viewModel))
+    }
 }
 
-extension ProfileDestionation: Hashable {}
+extension ProfileDestination: Hashable {}
 
-extension ProfileDestionation: View {
+extension ProfileDestination: View {
     var body: some View {
         destination
     }

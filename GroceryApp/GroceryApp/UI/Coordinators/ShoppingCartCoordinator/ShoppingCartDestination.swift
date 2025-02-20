@@ -17,6 +17,14 @@ struct ShoppingCartDestination {
     static func shoppingCart(viewModel: ShoppingCartViewModel) -> Self {
         .init(destination: .shoppingCart(viewModel: viewModel))
     }
+    
+    static func login(viewModel: LoginViewModel) -> Self {
+        .init(destination: .login(viewModel: viewModel))
+    }
+    
+    static func register(viewModel: RegisterViewModel) -> Self {
+        .init(destination: .register(viewModel: viewModel))
+    }
 }
 
 extension ShoppingCartDestination: Hashable {}

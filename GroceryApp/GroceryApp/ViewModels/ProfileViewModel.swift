@@ -6,19 +6,56 @@
 //
 
 import SwiftUI
+import Combine
+import FirebaseAuth
 
 final class ProfileViewModel: ObservableObject {
     
-    private let auth = FirebaseAuth()
+    init(auth: FirebaseAuth,
+         toLogin: @escaping () -> Void,
+         toRegister: @escaping () -> Void){
+        self.auth = auth
+        self.isUserLogged = auth.isLoggedIn()
+        self.user = auth.currentUser
+        self.toLogin = toLogin
+        self.toRegister = toRegister
+        observeAuthChanges()
+    }
+    
+    private var cancellables = Set<AnyCancellable>()
+
+            
+    private func observeAuthChanges() {
+            auth.authStatePublisher()
+                .receive(on: DispatchQueue.main)
+                .sink { [weak self] isLogged, user in
+                    self?.isUserLogged = isLogged
+                    self?.user = user
+                    self?.email = user?.email ?? ""
+                    self?.username = user?.displayName ?? ""
+                    
+                }
+                .store(in: &cancellables)
+    }
+    
+    private let auth: FirebaseAuth
+    
+    let toLogin: () -> Void
+    let toRegister: () -> Void
+
+    
+    @Published var isUserLogged: Bool
+    var user: User?
+    
 
     @Published var isEmailEdited = false
     @Published var isUserNameEdited = false
     
-    @Published var email = ""
+    @Published var email : String = ""
     @Published var isEmailValid = true
     @Published var emailErrorMessage = ""
     
-    @Published var username = ""
+    @Published var username : String = ""
     @Published var isUsernameValid = true
     @Published var usernameErrorMessage = ""
     
@@ -29,6 +66,7 @@ final class ProfileViewModel: ObservableObject {
     @Published var isPassValid = true
     
     @Published var errorOnEdit = false
+    @Published var errorOnLogout = false
     @Published var errorText = ""
     
     func validateEmail(email: String) {
@@ -88,4 +126,15 @@ final class ProfileViewModel: ObservableObject {
         }
     }
     
+    func logout() {
+        auth.logout { (result: Result<Bool, Error>) in
+            switch result {
+            case .success(let success):
+                self.isUserLogged = !success
+            case .failure(let error):
+                self.errorOnLogout = true
+                self.errorText = "Error while logging out: \(error.localizedDescription)"
+            }
+        }
+    }
 }
