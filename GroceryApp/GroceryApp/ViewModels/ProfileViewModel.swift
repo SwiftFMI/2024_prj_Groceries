@@ -29,13 +29,18 @@ final class ProfileViewModel: ObservableObject {
     
     
     private func observeAuthChanges() {
-        auth.authStatePublisher()
+        auth.userPublisher
             .receive(on: DispatchQueue.main)
-            .sink { [weak self] isLogged, user in
-                self?.isUserLogged = isLogged
+            .sink { [weak self] user in
                 self?.user = user
                 self?.email = user?.email ?? ""
                 self?.username = user?.displayName ?? ""
+
+                guard let user else {
+                    self?.isUserLogged = false
+                    return
+                }
+                self?.isUserLogged = true
             }
             .store(in: &cancellables)
     }

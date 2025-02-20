@@ -13,8 +13,15 @@ final class HomeCoordinator: Coordinator, ObservableObject {
 
     var initialDestination: HomeDestination!
 
+    let firebaseAuthManager: FirebaseAuth
+
     @MainActor
-    init(firebaseManager: FireStoreManager) {
+    init(
+        firebaseManager: FireStoreManager,
+        firebaseAuthManager: FirebaseAuth
+    ) {
+        self.firebaseAuthManager = firebaseAuthManager
+
         let homeViewModel = HomeViewModel(
             firebaseManager: firebaseManager,
             currentSectionIndex: 0,
@@ -40,6 +47,11 @@ extension HomeCoordinator: PickerPresentable {}
 
 extension HomeCoordinator {
     private func productDestination(for product: ProductData) -> HomeDestination {
-        .product(viewModel: ProductViewModel(product: product))
+        .product(
+            viewModel: ProductViewModel(
+                product: product,
+                auth: firebaseAuthManager
+            )
+        )
     }
 }

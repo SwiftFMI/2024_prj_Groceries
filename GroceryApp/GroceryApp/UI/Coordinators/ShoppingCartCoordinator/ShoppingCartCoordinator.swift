@@ -9,13 +9,13 @@ import SwiftUI
 
 final class ShoppingCartCoordinator: Coordinator, ObservableObject {
     @Published var path = [ShoppingCartDestination]()
-    private var auth = FirebaseAuth()
-    
-    
+    private var auth: FirebaseAuth
     var initialDestination: ShoppingCartDestination!
-    
+
     @MainActor
-    init() {
+    init(auth: FirebaseAuth) {
+        self.auth = auth
+
         let shoppingCartViewModel = ShoppingCartViewModel(
             auth: auth
         ){ [weak self] in

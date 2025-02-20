@@ -12,28 +12,34 @@ final class ContentCoordinator: Coordinator, ObservableObject {
     let tabBarItems: [BottomNavigationTab] = [.home, .shoppingCart, .profile]
     var appState: AppState
     var firebaseManager: FireStoreManager
+    let firebaseAuthManager: FirebaseAuth
 
     init(
         appState: AppState,
-        firebaseManager: FireStoreManager
+        firebaseManager: FireStoreManager,
+        firebaseAuthManager: FirebaseAuth
     ) {
         self.appState = appState
         self.firebaseManager = firebaseManager
+        self.firebaseAuthManager = firebaseAuthManager
     }
 
     @MainActor
     private lazy var homeCoordinator: HomeCoordinator = {
-        HomeCoordinator(firebaseManager: firebaseManager)
+        HomeCoordinator(
+            firebaseManager: firebaseManager,
+            firebaseAuthManager: firebaseAuthManager
+        )
     }()
 
     @MainActor
     private lazy var shoppingCartCoordinator: ShoppingCartCoordinator = {
-        ShoppingCartCoordinator()
+        ShoppingCartCoordinator(auth: firebaseAuthManager)
     }()
     
     @MainActor
     private lazy var profileCoordinator: ProfileCoordinator = {
-        ProfileCoordinator()
+        ProfileCoordinator(firebaseAuth: firebaseAuthManager)
     }()
 
     func start() -> some View {

@@ -11,8 +11,10 @@ import Combine
 final class FirebaseAuth {
     private let auth = Auth.auth()
     
-    var currentUser: User?
-    
+    @Published var currentUser: User?
+
+    var userPublisher: AnyPublisher<User?, Never> { $currentUser.eraseToAnyPublisher() }
+
     init(){
         currentUser = auth.currentUser ?? nil
     }
@@ -44,11 +46,12 @@ final class FirebaseAuth {
     func logout(completion: @escaping (Result<Bool, Error>) -> Void) {
         do {
             try auth.signOut()
+            currentUser = nil
+            completion(.success(true))
         } catch {
             print("Couldn't log out!")
             completion(.failure(Errors.LogoutFailed))
         }
-        completion(.success(true))
     }
     
     
@@ -131,13 +134,5 @@ final class FirebaseAuth {
                 completion(.success(()))
             }
         }
-    }
-    
-    func authStatePublisher () -> AnyPublisher<(Bool, User?), Never> {
-        let publisher = PassthroughSubject<(Bool, User?), Never>()
-        auth.addStateDidChangeListener { _, user in
-            publisher.send((self.isLoggedIn(), user))
-        }
-        return publisher.eraseToAnyPublisher()
     }
 }

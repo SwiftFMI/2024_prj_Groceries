@@ -14,6 +14,8 @@ struct ProductView: View {
     var body: some View {
         ScrollView {
             informationView
+            Text("\(viewModel.isUserLogged)")
+            chartView
         }
         .padding()
     }
@@ -30,6 +32,15 @@ struct ProductView: View {
             }
         }
         .navigationTitle(viewModel.product.name)
+        .toolbar {
+            if viewModel.isUserLogged {
+                ToolbarItem(placement: .topBarTrailing) {
+                    Button("Add to cart") {
+                        print("Add to cart")
+                    }
+                }
+            }
+        }
     }
 
     var chartView: some View {

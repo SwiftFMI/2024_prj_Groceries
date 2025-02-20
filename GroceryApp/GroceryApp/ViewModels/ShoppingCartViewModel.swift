@@ -10,32 +10,33 @@ import FirebaseAuth
 import Combine
 
 final class ShoppingCartViewModel: ObservableObject {
-    
+
+    @Published var isUserLogged: Bool
+
     let auth: FirebaseAuth
     let createRoadBlockViewModelAction: () -> RoadBlockViewModel
     private var cancellables = Set<AnyCancellable>()
-    
-    
+
     init(
         auth: FirebaseAuth,
         createRoadBlockViewModelAction: @escaping () -> RoadBlockViewModel
     ) {
         self.auth = auth
         self.createRoadBlockViewModelAction = createRoadBlockViewModelAction
+        isUserLogged = auth.isLoggedIn()
         observeAuthChanges()
     }
     
     private func observeAuthChanges() {
-        auth.authStatePublisher()
+        auth.userPublisher
             .receive(on: DispatchQueue.main)
-            .sink { [weak self] isLogged, user in
-                self?.isUserLogged = isLogged
-                self?.currentUser = user
+            .sink { [weak self] user in
+                guard let user else {
+                    self?.isUserLogged = false
+                    return
+                }
+                self?.isUserLogged = true
             }
             .store(in: &cancellables)
     }
-    
-    @Published var isUserLogged = false
-    var currentUser: User? = nil
-    
 }

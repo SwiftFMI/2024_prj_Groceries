@@ -16,8 +16,6 @@ class FireStoreManager: ObservableObject {
 
     var categoriesPublisher: AnyPublisher<[Category], Never> { $fetchedCategories.eraseToAnyPublisher() }
 
-    private var cancellables = Set<AnyCancellable>()
-
     func connect() {
         db = Firestore.firestore()
     }

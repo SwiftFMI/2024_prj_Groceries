@@ -5,13 +5,27 @@
 //  Created by Nikolay Dinkov on 20.02.25.
 //
 
+import Combine
 import SwiftUI
 
 final class ProductViewModel: ObservableObject {
-    let product: ProductData
 
-    init(product: ProductData) {
+    @Published var isUserLogged: Bool
+
+    let product: ProductData
+    let auth: FirebaseAuth
+
+    private var cancellables = Set<AnyCancellable>()
+
+    init(
+        product: ProductData,
+        auth: FirebaseAuth
+    ) {
         self.product = product
+        self.auth = auth
+        isUserLogged = auth.isLoggedIn()
+
+        observeAuthChanges()
     }
 
     var billaPrice: Double {
@@ -24,5 +38,18 @@ final class ProductViewModel: ObservableObject {
 
     var lidlPrice: Double {
         product.pricesLidl.values.reduce(0, +) / Double(product.pricesLidl.count)
+    }
+
+    private func observeAuthChanges() {
+        auth.userPublisher
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] user in
+                guard let user else {
+                    self?.isUserLogged = false
+                    return
+                }
+                self?.isUserLogged = true
+            }
+            .store(in: &cancellables)
     }
 }
