@@ -11,45 +11,8 @@ import FirebaseAuth
 
 final class ProfileViewModel: ObservableObject {
     
-    init(auth: FirebaseAuth,
-         toLogin: @escaping () -> Void,
-         toRegister: @escaping () -> Void,
-         toMap: @escaping () -> Void
-    ){
-        self.auth = auth
-        self.isUserLogged = auth.isLoggedIn()
-        self.user = auth.currentUser
-        self.toLogin = toLogin
-        self.toRegister = toRegister
-        self.toMap = toMap
-        observeAuthChanges()
-    }
-    
-    private var cancellables = Set<AnyCancellable>()
-    
-    
-    private func observeAuthChanges() {
-        auth.authStatePublisher()
-            .receive(on: DispatchQueue.main)
-            .sink { [weak self] isLogged, user in
-                self?.isUserLogged = isLogged
-                self?.user = user
-                self?.email = user?.email ?? ""
-                self?.username = user?.displayName ?? ""
-            }
-            .store(in: &cancellables)
-    }
-    
-    private let auth: FirebaseAuth
-    
-    let toLogin: () -> Void
-    let toRegister: () -> Void
-    let toMap: () -> Void
-    
-    
     @Published var isUserLogged: Bool
     var user: User?
-    
     
     private var isEmailEdited = false
     private var isUserNameEdited = false
@@ -71,6 +34,40 @@ final class ProfileViewModel: ObservableObject {
     @Published var errorOnEdit = false
     @Published var errorOnLogout = false
     @Published var errorText = ""
+    
+    private var cancellables = Set<AnyCancellable>()
+    
+    init(auth: FirebaseAuth,
+         toLogin: @escaping () -> Void,
+         toRegister: @escaping () -> Void,
+         toMap: @escaping () -> Void
+    ){
+        self.auth = auth
+        self.isUserLogged = auth.isLoggedIn()
+        self.user = auth.currentUser
+        self.toLogin = toLogin
+        self.toRegister = toRegister
+        self.toMap = toMap
+        observeAuthChanges()
+    }
+    
+    private func observeAuthChanges() {
+        auth.authStatePublisher()
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] isLogged, user in
+                self?.isUserLogged = isLogged
+                self?.user = user
+                self?.email = user?.email ?? ""
+                self?.username = user?.displayName ?? ""
+            }
+            .store(in: &cancellables)
+    }
+    
+    private let auth: FirebaseAuth
+    
+    let toLogin: () -> Void
+    let toRegister: () -> Void
+    let toMap: () -> Void
     
     func validateEmail(email: String) {
         isEmailEdited = true
