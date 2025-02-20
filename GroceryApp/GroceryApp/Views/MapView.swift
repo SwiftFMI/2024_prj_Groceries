@@ -14,8 +14,12 @@ struct MapView: View {
     
     var body: some View {
         VStack {
-            Map(coordinateRegion: $viewModel.position, annotationItems: viewModel.superMarketLocations) { item in
-                MapMarker(coordinate: item.placemark.coordinate, tint: .red)
+            Map(position: $viewModel.cameraPosition) {
+                UserAnnotation()
+                ForEach(viewModel.superMarketLocations, id: \.self) { item in
+                    Marker (item.name ?? "", coordinate: item.placemark.coordinate)
+                        .tint(.red)
+                }
             }
             .edgesIgnoringSafeArea(.all)
             
@@ -33,7 +37,7 @@ struct MapView: View {
             }
             
         }
-        .onAppear{
+        .onAppear {
             viewModel.searchSuperMarkets(superMarket: viewModel.selectedOption)
         }
     }

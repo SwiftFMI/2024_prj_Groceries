@@ -58,7 +58,7 @@ struct ProfileView: View {
                             },
                             textErrorMessage: $vm.usernameErrorMessage,
                             placeHolder: "Username"
-
+                            
                         )
                     } else {
                         Text(vm.username)
@@ -105,29 +105,31 @@ struct ProfileView: View {
             }.padding(.horizontal, 24)
             
             Button(action: {
-                        print("Shops button tapped!")
-                        vm.toMap()
-                    }) {
-                        HStack {
-                            Image(systemName: "cart.fill") // Cart icon
-                                .foregroundColor(.primary)
-
-                            Text("View Shops nearby") // Text label
-                                .fontWeight(.semibold)
-                                .foregroundColor(.primary)
-
-                            Spacer() // Pushes the arrow to the right
-
-                            Image(systemName: "chevron.right") // Right arrow
-                                .foregroundColor(.gray)
-                        }
-                        .padding()
-                        .overlay(
-                            RoundedRectangle(cornerRadius: 12)
-                                .stroke(Color.gray.opacity(0.4), lineWidth: 1.5)
-                        )
-                    }
-
+                if vm.isEditing {
+                    vm.isEditing.toggle()
+                }
+                vm.toMap()
+            }) {
+                HStack {
+                    Image(systemName: "cart.fill")
+                        .foregroundColor(.primary)
+                    
+                    Text("View Shops nearby")
+                        .fontWeight(.semibold)
+                        .foregroundColor(.primary)
+                    
+                    Spacer()
+                    
+                    Image(systemName: "chevron.right")
+                        .foregroundColor(.gray)
+                }
+                .padding()
+                .overlay(
+                    RoundedRectangle(cornerRadius: 12)
+                        .stroke(Color.gray.opacity(0.4), lineWidth: 1.5)
+                )
+            }
+            
             Button(action: {
                 if vm.isEditing {
                     vm.save()
@@ -174,32 +176,32 @@ struct ButtonsToAuth: View {
     let toRegister: () -> Void
     
     var body: some View{
-            VStack(spacing: 24){
-                Button(action: {
-                    toLogin()
-                }) {
-                    Text("Login")
-                        .font(.headline)
-                        .frame(maxWidth: .infinity)
-                        .padding()
-                        .background(Color.blue)
-                        .foregroundColor(.white)
-                        .cornerRadius(10)
-                        .padding([.leading, .trailing], 20)
-                }
-                Button(action: {
-                    toRegister()
-                }) {
-                    Text("Register")
-                        .font(.headline)
-                        .frame(maxWidth: .infinity)
-                        .padding()
-                        .background(Color.blue)
-                        .foregroundColor(.white)
-                        .cornerRadius(10)
-                        .padding([.leading, .trailing], 20)
-                }
+        VStack(spacing: 24){
+            Button(action: {
+                toLogin()
+            }) {
+                Text("Login")
+                    .font(.headline)
+                    .frame(maxWidth: .infinity)
+                    .padding()
+                    .background(Color.blue)
+                    .foregroundColor(.white)
+                    .cornerRadius(10)
+                    .padding([.leading, .trailing], 20)
+            }
+            Button(action: {
+                toRegister()
+            }) {
+                Text("Register")
+                    .font(.headline)
+                    .frame(maxWidth: .infinity)
+                    .padding()
+                    .background(Color.blue)
+                    .foregroundColor(.white)
+                    .cornerRadius(10)
+                    .padding([.leading, .trailing], 20)
             }
         }
+    }
 }
 

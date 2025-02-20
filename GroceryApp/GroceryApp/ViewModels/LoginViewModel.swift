@@ -18,8 +18,6 @@ final class LoginViewModel: ObservableObject {
     
     private let onSuccessLogin: () -> Void
     
-    
-    
     @Published var email = ""
     @Published var isEmailValid = true
     @Published var emailErrorMessage = ""
@@ -33,13 +31,13 @@ final class LoginViewModel: ObservableObject {
     
     
     func validateEmail(email: String) {
-        let res = Validators().validateEmail(email: email)
+        let res = Validators.validateEmail(email: email)
         isEmailValid = res.0
         emailErrorMessage = res.1
     }
     
     func validatePass(pass: String){
-        let res = Validators().validatePass(pass: pass)
+        let res = Validators.validatePass(pass: pass)
         isPassValid = res.0
         passErrorMessage = res.1
     }
@@ -51,8 +49,6 @@ final class LoginViewModel: ObservableObject {
             case .success:
                 self.onSuccessLogin()
                 self.errorOnLogin = false
-                print(self.auth.isLoggedIn())
-
             case .failure:
                 self.errorOnLogin = true
             }

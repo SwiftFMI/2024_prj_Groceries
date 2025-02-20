@@ -26,19 +26,18 @@ final class ProfileViewModel: ObservableObject {
     }
     
     private var cancellables = Set<AnyCancellable>()
-
-            
+    
+    
     private func observeAuthChanges() {
-            auth.authStatePublisher()
-                .receive(on: DispatchQueue.main)
-                .sink { [weak self] isLogged, user in
-                    self?.isUserLogged = isLogged
-                    self?.user = user
-                    self?.email = user?.email ?? ""
-                    self?.username = user?.displayName ?? ""
-                    
-                }
-                .store(in: &cancellables)
+        auth.authStatePublisher()
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] isLogged, user in
+                self?.isUserLogged = isLogged
+                self?.user = user
+                self?.email = user?.email ?? ""
+                self?.username = user?.displayName ?? ""
+            }
+            .store(in: &cancellables)
     }
     
     private let auth: FirebaseAuth
@@ -46,14 +45,14 @@ final class ProfileViewModel: ObservableObject {
     let toLogin: () -> Void
     let toRegister: () -> Void
     let toMap: () -> Void
-
+    
     
     @Published var isUserLogged: Bool
     var user: User?
     
-
-    @Published var isEmailEdited = false
-    @Published var isUserNameEdited = false
+    
+    private var isEmailEdited = false
+    private var isUserNameEdited = false
     
     @Published var email : String = ""
     @Published var isEmailValid = true
@@ -75,20 +74,20 @@ final class ProfileViewModel: ObservableObject {
     
     func validateEmail(email: String) {
         isEmailEdited = true
-        let res = Validators().validateEmail(email: email)
+        let res = Validators.validateEmail(email: email)
         isEmailValid = res.0
         emailErrorMessage = res.1
     }
     
     func validateUsername(userName: String){
         isUserNameEdited = true
-        let res = Validators().validateUsername(userName: userName)
+        let res = Validators.validateUsername(userName: userName)
         isUsernameValid = res.0
         usernameErrorMessage = res.1
     }
     
     func validatePass(pass: String){
-        let res = Validators().validatePass(pass: pass)
+        let res = Validators.validatePass(pass: pass)
         isPassValid = res.0
         passErrorMessage = res.1
     }
@@ -108,10 +107,10 @@ final class ProfileViewModel: ObservableObject {
             case .success():
                 self.isEditing.toggle()
                 
-            case .failure(_):
+            case .failure(let error):
                 self.errorOnEdit = true
-                self.errorText = "Error while updating email"
-            
+                self.errorText = "Error while updating email: \(error.localizedDescription)"
+                
             }
         }
         
@@ -123,9 +122,9 @@ final class ProfileViewModel: ObservableObject {
             case .success():
                 self.isEditing.toggle()
                 
-            case .failure(_):
+            case .failure(let error):
                 self.errorOnEdit = true
-                self.errorText = "Error while updating email"
+                self.errorText = "Error while updating username: \(error.localizedDescription)"
             }
         }
     }

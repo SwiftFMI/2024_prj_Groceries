@@ -16,17 +16,20 @@ final class FirebaseAuth {
     init(){
         currentUser = auth.currentUser ?? nil
     }
-
+    
     func isLoggedIn() -> Bool {
         return auth.currentUser != nil
     }
-
+    
     func login(
         email: String,
         password: String,
         completion: @escaping (Result<Void, Error>) -> Void
     ) {
-        auth.signIn(withEmail: email, password: password) { result, error in
+        auth.signIn(
+            withEmail: email,
+            password: password
+        ) { result, error in
             if let error = error {
                 completion(.failure(error))
                 return
@@ -37,7 +40,7 @@ final class FirebaseAuth {
             }
         }
     }
-
+    
     func logout(completion: @escaping (Result<Bool, Error>) -> Void) {
         do {
             try auth.signOut()
@@ -47,15 +50,18 @@ final class FirebaseAuth {
         }
         completion(.success(true))
     }
-
-
+    
+    
     func register(
         email: String,
         password: String,
         name: String,
         completion: @escaping (Result<Void, Error>) -> Void
     ) {
-        auth.createUser(withEmail: email, password: password) { result, error in
+        auth.createUser(
+            withEmail: email,
+            password: password
+        ) { result, error in
             guard result != nil, error == nil else {
                 completion(.failure(Errors.RegisterFailed))
                 return
@@ -74,8 +80,8 @@ final class FirebaseAuth {
             }
         }
     }
-
-    func editUserName(
+    
+    func editUserName (
         userName: String,
         completion: @escaping (Result<Void, Error>) -> Void
     ) {
@@ -83,10 +89,10 @@ final class FirebaseAuth {
             completion(.failure(Errors.UserNameUpdateFailed))
             return
         }
-
+        
         let changeRequest = user.createProfileChangeRequest()
         changeRequest.displayName = userName
-
+        
         changeRequest.commitChanges { error in
             if error != nil {
                 completion(.failure(Errors.UserNameUpdateFailed))
@@ -94,24 +100,29 @@ final class FirebaseAuth {
             }
             completion(.success(()))
         }
-
+        
     }
-
-    func editEmail(newEmail: String, password: String,
-                   completion: @escaping (Result<Void, Error>) -> Void) {
+    
+    func editEmail (
+        newEmail: String,
+        password: String,
+        completion: @escaping (Result<Void, Error>) -> Void
+    ) {
         guard let user = auth.currentUser, let email = user.email else {
             completion(.failure(Errors.EmailUpdateFailed))
             return
         }
-
-        let credentials = EmailAuthProvider.credential(withEmail: email, password: password)
-
+        
+        let credentials = EmailAuthProvider.credential(
+            withEmail: email,
+            password: password
+        )
         user.reauthenticate(with: credentials) { error, _  in
             guard error != nil else {
                 completion(.failure(Errors.EmailUpdateFailed))
                 return
             }
-
+            
             user.sendEmailVerification { error in
                 if error != nil {
                     completion(.failure(Errors.EmailUpdateFailed))
@@ -122,11 +133,11 @@ final class FirebaseAuth {
         }
     }
     
-    func authStatePublisher() -> AnyPublisher<(Bool, User?), Never> {
-            let publisher = PassthroughSubject<(Bool, User?), Never>()
-            auth.addStateDidChangeListener { _, user in
-                publisher.send((self.isLoggedIn(), user))
-            }
-            return publisher.eraseToAnyPublisher()
+    func authStatePublisher () -> AnyPublisher<(Bool, User?), Never> {
+        let publisher = PassthroughSubject<(Bool, User?), Never>()
+        auth.addStateDidChangeListener { _, user in
+            publisher.send((self.isLoggedIn(), user))
         }
+        return publisher.eraseToAnyPublisher()
+    }
 }

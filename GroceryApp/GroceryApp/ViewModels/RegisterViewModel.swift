@@ -28,7 +28,7 @@ final class RegisterViewModel: ObservableObject {
     @Published var confirmPassErrorMessage = ""
     
     @Published var errorOnRegister = false
-    @Published var errorText = "Error while registering"
+    @Published var errorText = ""
     
     @Published var email = ""
     @Published var isEmailValid = true
@@ -39,13 +39,13 @@ final class RegisterViewModel: ObservableObject {
     @Published var usernameErrorMessage = ""
     
     func validateEmail(email: String) {
-        let res = Validators().validateEmail(email: email)
+        let res = Validators.validateEmail(email: email)
         isEmailValid = res.0
         emailErrorMessage = res.1
     }
     
     func validatePass(pass: String){
-        let res = Validators().validatePass(pass: pass)
+        let res = Validators.validatePass(pass: pass)
         isPassValid = res.0
         passErrorMessage = res.1
     }
@@ -56,14 +56,12 @@ final class RegisterViewModel: ObservableObject {
             confirmPassErrorMessage = "The passwords don't match"
             return
         }
-        
         arePasswordsMatching = true
         confirmPassErrorMessage = ""
-        
     }
     
     func validateUsername(userName: String){
-        let res = Validators().validateUsername(userName: userName)
+        let res = Validators.validateUsername(userName: userName)
         isUsernameValid = res.0
         usernameErrorMessage = res.1
     }
@@ -72,12 +70,12 @@ final class RegisterViewModel: ObservableObject {
     func register() {
         auth.register(email: email, password: password, name: username) { result in
             switch result {
-            case .success:
+            case .success(_):
                 self.onSuccessRegister()
                 self.errorOnRegister = false
-                print(self.auth.isLoggedIn())
-            case .failure:
+            case .failure(let error):
                 self.errorOnRegister = true
+                self.errorText = "Error while registering: \(error.localizedDescription)"
             }
         }
     }
