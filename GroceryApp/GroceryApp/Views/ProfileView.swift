@@ -105,6 +105,30 @@ struct ProfileView: View {
             }.padding(.horizontal, 24)
             
             Button(action: {
+                        print("Shops button tapped!")
+                        vm.toMap()
+                    }) {
+                        HStack {
+                            Image(systemName: "cart.fill") // Cart icon
+                                .foregroundColor(.primary)
+
+                            Text("View Shops nearby") // Text label
+                                .fontWeight(.semibold)
+                                .foregroundColor(.primary)
+
+                            Spacer() // Pushes the arrow to the right
+
+                            Image(systemName: "chevron.right") // Right arrow
+                                .foregroundColor(.gray)
+                        }
+                        .padding()
+                        .overlay(
+                            RoundedRectangle(cornerRadius: 12)
+                                .stroke(Color.gray.opacity(0.4), lineWidth: 1.5)
+                        )
+                    }
+
+            Button(action: {
                 if vm.isEditing {
                     vm.save()
                 }

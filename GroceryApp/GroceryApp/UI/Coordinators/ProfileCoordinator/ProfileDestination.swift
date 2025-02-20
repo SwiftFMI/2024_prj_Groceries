@@ -25,6 +25,10 @@ struct ProfileDestination {
     static func register(viewModel: RegisterViewModel) -> Self {
         .init(destination: .register(viewModel: viewModel))
     }
+    
+    static func map(viewModel: MapViewModel) -> Self {
+        .init(destination: .map(viewModel: viewModel))
+    }
 }
 
 extension ProfileDestination: Hashable {}

@@ -13,12 +13,15 @@ final class ProfileViewModel: ObservableObject {
     
     init(auth: FirebaseAuth,
          toLogin: @escaping () -> Void,
-         toRegister: @escaping () -> Void){
+         toRegister: @escaping () -> Void,
+         toMap: @escaping () -> Void
+    ){
         self.auth = auth
         self.isUserLogged = auth.isLoggedIn()
         self.user = auth.currentUser
         self.toLogin = toLogin
         self.toRegister = toRegister
+        self.toMap = toMap
         observeAuthChanges()
     }
     
@@ -42,6 +45,7 @@ final class ProfileViewModel: ObservableObject {
     
     let toLogin: () -> Void
     let toRegister: () -> Void
+    let toMap: () -> Void
 
     
     @Published var isUserLogged: Bool

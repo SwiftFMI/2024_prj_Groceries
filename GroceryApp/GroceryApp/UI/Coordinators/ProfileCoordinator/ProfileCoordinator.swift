@@ -22,6 +22,9 @@ final class ProfileCoordinator: ObservableObject, Coordinator{
                 },
                 toRegister: { [weak self] in
                     self?.transitionToRegister()
+                },
+                toMap: {
+                    self.transitionToMap()
                 }
             )
         self.initialDestination = .profile(viewModel: vm)
@@ -39,8 +42,15 @@ final class ProfileCoordinator: ObservableObject, Coordinator{
             },
             toRegister: {
                 self.transitionToRegister()
+            },
+            toMap: {
+                self.transitionToMap()
             }
         ))
+    }
+    
+    private func mapDestination() -> ProfileDestination {
+        .map(viewModel: MapViewModel())
     }
     
     
@@ -73,5 +83,9 @@ final class ProfileCoordinator: ObservableObject, Coordinator{
     
     private func transitionToProfile(){
         path.removeAll()
+    }
+    
+    private func transitionToMap(){
+        self.path.append(self.mapDestination())
     }
 }
