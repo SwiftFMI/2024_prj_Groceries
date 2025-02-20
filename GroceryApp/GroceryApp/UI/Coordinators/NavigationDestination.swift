@@ -59,7 +59,7 @@ extension NavigationDestination: View {
             case let .shoppingCart(viewModel):
                 ShoppingCartView(viewModel: viewModel)
             case let .profile(viewModel):
-            ProfileView(vm: viewModel)
+            ProfileView(viewModel: viewModel)
             case let .login(viewModel):
                 LoginView(viewModel: viewModel)
             case let .register(viewModel):

@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct ProfileView: View {
-    @ObservedObject var vm : ProfileViewModel
+    @ObservedObject var viewModel : ProfileViewModel
     
     let userImage = Image(systemName: "person.circle.fill")
     
@@ -28,12 +28,12 @@ struct ProfileView: View {
                     .overlay(Circle().stroke(Color.white, lineWidth: 4))
                     .shadow(radius: 10)
                 
-                if (vm.isUserLogged) {
+                if (viewModel.isUserLogged) {
                     infoView
                 } else {
                     ButtonsToAuth(
-                        toLogin: vm.toLogin,
-                        toRegister: vm.toRegister
+                        toLogin: viewModel.toLogin,
+                        toRegister: viewModel.toRegister
                     )
                 }
                 
@@ -49,19 +49,19 @@ struct ProfileView: View {
                     Text("Username")
                         .font(.subheadline)
                         .foregroundColor(.secondary)
-                    if vm.isEditing {
+                    if viewModel.isEditing {
                         TextEditView(
-                            text: $vm.username,
-                            isTextValid: $vm.isUsernameValid,
+                            text: $viewModel.username,
+                            isTextValid: $viewModel.isUsernameValid,
                             validateText: { uName in
-                                vm.validateUsername(userName: uName)
+                                viewModel.validateUsername(userName: uName)
                             },
-                            textErrorMessage: $vm.usernameErrorMessage,
+                            textErrorMessage: $viewModel.usernameErrorMessage,
                             placeHolder: "Username"
                             
                         )
                     } else {
-                        Text(vm.username)
+                        Text(viewModel.username)
                             .font(.title)
                             .fontWeight(.semibold)
                             .foregroundColor(.primary)
@@ -73,29 +73,29 @@ struct ProfileView: View {
                     Text("Email")
                         .font(.subheadline)
                         .foregroundColor(.secondary)
-                    if vm.isEditing {
+                    if viewModel.isEditing {
                         TextEditView(
-                            text: $vm.email,
-                            isTextValid: $vm.isEmailValid,
+                            text: $viewModel.email,
+                            isTextValid: $viewModel.isEmailValid,
                             validateText: { email in
-                                vm.validateEmail(email: email)
+                                viewModel.validateEmail(email: email)
                             },
-                            textErrorMessage: $vm.emailErrorMessage
+                            textErrorMessage: $viewModel.emailErrorMessage
                         )
                         Text("Password for confirmation")
                             .font(.subheadline)
                             .foregroundColor(.secondary)
                         PasswordTextView(
-                            pass: $vm.password,
-                            isPassValid: $vm.isPassValid,
+                            pass: $viewModel.password,
+                            isPassValid: $viewModel.isPassValid,
                             validatePass: { pass in
-                                vm.validatePass(pass: pass)
+                                viewModel.validatePass(pass: pass)
                             },
-                            passErrorMessage: $vm.passErrorMessage,
+                            passErrorMessage: $viewModel.passErrorMessage,
                             confirmPass: false
                         )
                     } else {
-                        Text(vm.email)
+                        Text(viewModel.email)
                             .font(.title)
                             .fontWeight(.semibold)
                             .foregroundColor(.primary)
@@ -105,10 +105,11 @@ struct ProfileView: View {
             }.padding(.horizontal, 24)
             
             Button(action: {
-                if vm.isEditing {
-                    vm.isEditing.toggle()
+                if viewModel.isEditing {
+                    viewModel.isEditing.toggle()
+                    viewModel.resetEditing()
                 }
-                vm.toMap()
+                viewModel.toMap()
             }) {
                 HStack {
                     Image(systemName: "cart.fill")
@@ -131,38 +132,38 @@ struct ProfileView: View {
             }
             
             Button(action: {
-                if vm.isEditing {
-                    vm.save()
+                if viewModel.isEditing {
+                    viewModel.save()
                 }
                 withAnimation{
-                    vm.isEditing.toggle()
+                    viewModel.isEditing.toggle()
                 }
             }) {
-                Text(vm.isEditing ? "Save" : "Edit Profile")
+                Text(viewModel.isEditing ? "Save" : "Edit Profile")
                     .font(.headline)
                     .frame(maxWidth: .infinity)
                     .padding()
-                    .background(vm.isEditing ? Color.green : Color.blue)
+                    .background(viewModel.isEditing ? Color.green : Color.blue)
                     .foregroundColor(.white)
                     .cornerRadius(10)
                     .padding([.leading, .trailing], 20)
-            }.alert(vm.errorText, isPresented: $vm.errorOnEdit) {
+            }.alert(viewModel.errorText, isPresented: $viewModel.errorOnEdit) {
                 Button("OK", role: .cancel) { }
             }
             
-            if !vm.isEditing{
+            if !viewModel.isEditing{
                 Button(action: {
-                    vm.logout()
+                    viewModel.logout()
                 }) {
                     Text("Logout")
                         .font(.headline)
                         .frame(maxWidth: .infinity)
                         .padding()
-                        .background(vm.isEditing ? Color.green : Color.blue)
+                        .background(viewModel.isEditing ? Color.green : Color.blue)
                         .foregroundColor(.white)
                         .cornerRadius(10)
                         .padding([.leading, .trailing], 20)
-                }.alert(vm.errorText, isPresented: $vm.errorOnLogout) {
+                }.alert(viewModel.errorText, isPresented: $viewModel.errorOnLogout) {
                     Button("OK", role: .cancel) { }
                 }
                 
