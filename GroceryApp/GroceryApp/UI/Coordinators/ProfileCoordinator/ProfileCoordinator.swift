@@ -10,6 +10,7 @@ import SwiftUI
 final class ProfileCoordinator: ObservableObject, Coordinator{
     @Published var path = [ProfileDestination]()
     private var auth = FirebaseAuth()
+    private var locationManager = LocationManager.shared
     
     var initialDestination: ProfileDestination!
     
@@ -50,7 +51,10 @@ final class ProfileCoordinator: ObservableObject, Coordinator{
     }
     
     private func mapDestination() -> ProfileDestination {
-        .map(viewModel: MapViewModel())
+        .map(viewModel: MapViewModel(
+            locationManager: locationManager
+        )
+        )
     }
     
     

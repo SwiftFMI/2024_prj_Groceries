@@ -140,4 +140,19 @@ final class ProfileViewModel: ObservableObject {
             }
         }
     }
+    
+    func resetEditing(){
+        isEmailEdited = false
+        isUserNameEdited = false
+        email = user?.email ?? ""
+        username = user?.displayName ?? ""
+        emailErrorMessage = ""
+        usernameErrorMessage = ""
+        password = ""
+        passErrorMessage = ""
+        isPassValid = true
+        isEmailValid = true
+        isUsernameValid = true
+        
+    }
 }
