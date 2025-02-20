@@ -17,6 +17,10 @@ struct HomeDestination {
     static func home(viewModel: HomeViewModel) -> Self {
         .init(destination: .home(viewModel: viewModel))
     }
+
+    static func product(viewModel: ProductViewModel) -> Self {
+        .init(destination: .product(viewModel: viewModel))
+    }
 }
 
 extension HomeDestination: Hashable {}

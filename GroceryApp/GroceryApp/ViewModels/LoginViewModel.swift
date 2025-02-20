@@ -25,13 +25,13 @@ import SwiftUI
     
     
     func validateEmail(email: String) {
-        let res = Validators().validateEmail(email: email)
+        let res = Validators.validateEmail(email: email)
         isEmailValid = res.0
         emailErrorMessage = res.1
     }
     
     func validatePass(pass: String){
-        let res = Validators().validatePass(pass: pass)
+        let res = Validators.validatePass(pass: pass)
         isPassValid = res.0
         passErrorMessage = res.1
     }

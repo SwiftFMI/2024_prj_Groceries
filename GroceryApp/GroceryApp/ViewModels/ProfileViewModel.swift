@@ -33,20 +33,20 @@ final class ProfileViewModel: ObservableObject {
     
     func validateEmail(email: String) {
         isEmailEdited = true
-        let res = Validators().validateEmail(email: email)
+        let res = Validators.validateEmail(email: email)
         isEmailValid = res.0
         emailErrorMessage = res.1
     }
     
     func validateUsername(userName: String){
         isUserNameEdited = true
-        let res = Validators().validateUsername(userName: userName)
+        let res = Validators.validateUsername(userName: userName)
         isUsernameValid = res.0
         usernameErrorMessage = res.1
     }
     
     func validatePass(pass: String){
-        let res = Validators().validatePass(pass: pass)
+        let res = Validators.validatePass(pass: pass)
         isPassValid = res.0
         passErrorMessage = res.1
     }

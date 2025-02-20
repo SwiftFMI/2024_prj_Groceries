@@ -32,13 +32,13 @@ import SwiftUI
     @Published var usernameErrorMessage = ""
     
     func validateEmail(email: String) {
-        let res = Validators().validateEmail(email: email)
+        let res = Validators.validateEmail(email: email)
         isEmailValid = res.0
         emailErrorMessage = res.1
     }
     
     func validatePass(pass: String){
-        let res = Validators().validatePass(pass: pass)
+        let res = Validators.validatePass(pass: pass)
         isPassValid = res.0
         passErrorMessage = res.1
     }
@@ -56,7 +56,7 @@ import SwiftUI
     }
     
     func validateUsername(userName: String){
-        let res = Validators().validateUsername(userName: userName)
+        let res = Validators.validateUsername(userName: userName)
         isUsernameValid = res.0
         usernameErrorMessage = res.1
     }
