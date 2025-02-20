@@ -8,7 +8,16 @@
 import SwiftUI
 
 struct ShoppingCartView: View {
+    
+    @StateObject var viewModel : ShoppingCartViewModel
+    
     var body: some View {
-        Text("Shopping Cart View")
+        
+        if viewModel.isUserLogged {
+            Text("Shopping Cart View")
+        } else {
+            RoadBlockView(viewModel: viewModel.createRoadBlockViewModelAction())
+        }
+        
     }
 }

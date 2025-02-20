@@ -7,77 +7,77 @@ import SwiftUI
 
 struct RegisterView: View {
     
-    @StateObject var vm: RegisterViewModel = RegisterViewModel()
+    @StateObject var vm: RegisterViewModel
     
     var body: some View {
-        
-        VStack(spacing: 24) {
-            Text("Register")
-               .font(.system(size: 50))
-               .fontWeight(.heavy)
-               .padding(.top)
-            
-            TextEditView(
-                text: $vm.username,
-                isTextValid: $vm.isUsernameValid,
-                validateText: { uName in
-                    vm.validateUsername(userName: uName)
-                },
-                textErrorMessage: $vm.usernameErrorMessage,
-                placeHolder: "Username"
-            )
-
-            TextEditView(
-                text: $vm.email,
-                isTextValid: $vm.isEmailValid,
-                validateText: { email in
-                    vm.validateEmail(email: email)
-                },
-                textErrorMessage: $vm.emailErrorMessage
-            )
-            
-            PasswordTextView(
-                pass: $vm.password,
-                isPassValid: $vm.isPassValid,
-                validatePass: { pass in
-                    vm.validatePass(pass: pass)
-                },
-                passErrorMessage: $vm.passErrorMessage,
-                confirmPass: false
-            )
-            
-            PasswordTextView(
-                pass: $vm.confirmPass,
-                isPassValid: $vm.arePasswordsMatching,
-                validatePass: { pass in
-                    vm.passwordsMatch(confirmPass: pass)
-                },
-                passErrorMessage: $vm.confirmPassErrorMessage,
-                confirmPass: true
-            )
-            
-            Spacer()
-            
-            Button(action: {
-                vm.register()
-            }) {
+        ScrollView {
+            VStack(spacing: 24) {
                 Text("Register")
-                    .frame(maxWidth: .infinity)
-                    .padding()
-                    .background(Color.blue)
-                    .foregroundColor(.white)
-                    .cornerRadius(8)
-                    .font(.headline)
+                    .font(.system(size: 50))
+                    .fontWeight(.heavy)
+                    .padding(.top)
+                
+                TextEditView(
+                    text: $vm.username,
+                    isTextValid: $vm.isUsernameValid,
+                    validateText: { uName in
+                        vm.validateUsername(userName: uName)
+                    },
+                    textErrorMessage: $vm.usernameErrorMessage,
+                    placeHolder: "Username"
+                )
+                
+                TextEditView(
+                    text: $vm.email,
+                    isTextValid: $vm.isEmailValid,
+                    validateText: { email in
+                        vm.validateEmail(email: email)
+                    },
+                    textErrorMessage: $vm.emailErrorMessage
+                )
+                
+                PasswordTextView(
+                    pass: $vm.password,
+                    isPassValid: $vm.isPassValid,
+                    validatePass: { pass in
+                        vm.validatePass(pass: pass)
+                    },
+                    passErrorMessage: $vm.passErrorMessage,
+                    confirmPass: false
+                )
+                
+                PasswordTextView(
+                    pass: $vm.confirmPass,
+                    isPassValid: $vm.arePasswordsMatching,
+                    validatePass: { pass in
+                        vm.passwordsMatch(confirmPass: pass)
+                    },
+                    passErrorMessage: $vm.confirmPassErrorMessage,
+                    confirmPass: true
+                )
+                
+                Spacer()
+                
+                Button(action: {
+                    vm.register()
+                }) {
+                    Text("Register")
+                        .frame(maxWidth: .infinity)
+                        .padding()
+                        .background(Color.blue)
+                        .foregroundColor(.white)
+                        .cornerRadius(8)
+                        .font(.headline)
+                }
+                .alert("Error while registering", isPresented: $vm.errorOnRegister) {
+                    Button("OK", role: .cancel) { }
+                }
+                Spacer()
             }
-            .alert("Error while registering", isPresented: $vm.errorOnRegister) {
-                Button("OK", role: .cancel) { }
-            }
-            Spacer()
+            .padding(.horizontal, 24)
+            .padding(.top, 32)
+            
         }
-        .padding(.horizontal, 24)
-        .padding(.top, 32)
-        
-        
     }
 }
 
@@ -94,9 +94,9 @@ struct TextEditView: View {
     var body : some View {
         VStack(alignment: .leading, spacing: 8) {
             TextField(placeHolder, text: $text)
-                .onChange(of: text, perform: { newValue in
-                    validateText(newValue)
-                })
+                .onChange(of: text) {
+                    validateText(text)
+                }
                 .padding()
                 .background(Color.white)
                 .cornerRadius(8)
@@ -128,14 +128,14 @@ struct PasswordTextView: View {
     var body : some View {
         VStack(alignment: .leading, spacing: 8) {
             SecureField(text, text: $pass)
-                .onChange(of: pass, perform: { newValue in
-                    validatePass(newValue)
-                })
+                .onChange(of: pass) {
+                    validatePass(pass)
+                }
                 .padding()
                 .background(Color.white)
                 .cornerRadius(8)
                 .overlay(RoundedRectangle(cornerRadius: 8)
-                    .stroke(!isPassValid ? Color.red : Color(.systemBlue), lineWidth: 1))
+                .stroke(!isPassValid ? Color.red : Color(.systemBlue), lineWidth: 1))
             
             if !isPassValid {
                 Text(passErrorMessage)

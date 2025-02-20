@@ -7,10 +7,16 @@
 
 import SwiftUI
 
-@MainActor final class LoginViewModel: ObservableObject {
+final class LoginViewModel: ObservableObject {
     
-    private lazy var auth = FirebaseAuth()
+    init(auth: FirebaseAuth, onSuccessfullLogin: @escaping () -> Void){
+        self.auth = auth
+        self.onSuccessLogin = onSuccessfullLogin
+    }
     
+    private let auth: FirebaseAuth
+    
+    private let onSuccessLogin: () -> Void
     
     @Published var email = ""
     @Published var isEmailValid = true
@@ -41,10 +47,8 @@ import SwiftUI
         auth.login(email: email, password: password) { result in
             switch result {
             case .success:
-                // Move to profile page
+                self.onSuccessLogin()
                 self.errorOnLogin = false
-                print(self.auth.isLoggedIn())
-
             case .failure:
                 self.errorOnLogin = true
             }

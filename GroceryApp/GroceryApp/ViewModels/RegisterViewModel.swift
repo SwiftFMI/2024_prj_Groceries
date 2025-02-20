@@ -7,9 +7,16 @@
 
 import SwiftUI
 
-@MainActor final class RegisterViewModel: ObservableObject {
+final class RegisterViewModel: ObservableObject {
     
-    private lazy var auth = FirebaseAuth()
+    init(auth: FirebaseAuth, onSuccessRegister: @escaping () -> Void){
+        self.auth = auth
+        self.onSuccessRegister = onSuccessRegister
+    }
+    
+    private let auth : FirebaseAuth
+    
+    let onSuccessRegister: () -> Void
     
     
     @Published var password = ""
@@ -21,7 +28,7 @@ import SwiftUI
     @Published var confirmPassErrorMessage = ""
     
     @Published var errorOnRegister = false
-    @Published var errorText = "Error while registering"
+    @Published var errorText = ""
     
     @Published var email = ""
     @Published var isEmailValid = true
@@ -49,10 +56,8 @@ import SwiftUI
             confirmPassErrorMessage = "The passwords don't match"
             return
         }
-        
         arePasswordsMatching = true
         confirmPassErrorMessage = ""
-        
     }
     
     func validateUsername(userName: String){
@@ -65,12 +70,12 @@ import SwiftUI
     func register() {
         auth.register(email: email, password: password, name: username) { result in
             switch result {
-            case .success:
-                // Move to profile page
+            case .success(_):
+                self.onSuccessRegister()
                 self.errorOnRegister = false
-                print(self.auth.isLoggedIn())
-            case .failure:
+            case .failure(let error):
                 self.errorOnRegister = true
+                self.errorText = "Error while registering: \(error.localizedDescription)"
             }
         }
     }
