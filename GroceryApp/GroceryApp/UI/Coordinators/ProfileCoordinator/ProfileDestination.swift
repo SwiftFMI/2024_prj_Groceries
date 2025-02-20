@@ -9,11 +9,11 @@ import SwiftUI
 
 struct ProfileDestination {
     private let destination: NavigationDestination
-
+    
     private init(destination: NavigationDestination) {
         self.destination = destination
     }
-
+    
     static func profile(viewModel: ProfileViewModel) -> Self {
         .init(destination: .profile(viewModel: viewModel))
     }
@@ -24,6 +24,10 @@ struct ProfileDestination {
     
     static func register(viewModel: RegisterViewModel) -> Self {
         .init(destination: .register(viewModel: viewModel))
+    }
+    
+    static func map(viewModel: MapViewModel) -> Self {
+        .init(destination: .map(viewModel: viewModel))
     }
 }
 

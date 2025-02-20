@@ -18,5 +18,6 @@ struct ShoppingCartView: View {
         } else {
             RoadBlockView(viewModel: viewModel.createRoadBlockViewModelAction())
         }
+        
     }
 }

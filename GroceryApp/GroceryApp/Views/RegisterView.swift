@@ -94,9 +94,9 @@ struct TextEditView: View {
     var body : some View {
         VStack(alignment: .leading, spacing: 8) {
             TextField(placeHolder, text: $text)
-                .onChange(of: text, perform: { newValue in
-                    validateText(newValue)
-                })
+                .onChange(of: text) {
+                    validateText(text)
+                }
                 .padding()
                 .background(Color.white)
                 .cornerRadius(8)
@@ -128,14 +128,14 @@ struct PasswordTextView: View {
     var body : some View {
         VStack(alignment: .leading, spacing: 8) {
             SecureField(text, text: $pass)
-                .onChange(of: pass, perform: { newValue in
-                    validatePass(newValue)
-                })
+                .onChange(of: pass) {
+                    validatePass(pass)
+                }
                 .padding()
                 .background(Color.white)
                 .cornerRadius(8)
                 .overlay(RoundedRectangle(cornerRadius: 8)
-                    .stroke(!isPassValid ? Color.red : Color(.systemBlue), lineWidth: 1))
+                .stroke(!isPassValid ? Color.red : Color(.systemBlue), lineWidth: 1))
             
             if !isPassValid {
                 Text(passErrorMessage)

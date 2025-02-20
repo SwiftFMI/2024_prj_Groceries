@@ -31,7 +31,6 @@ final class ShoppingCartViewModel: ObservableObject {
             .sink { [weak self] isLogged, user in
                 self?.isUserLogged = isLogged
                 self?.currentUser = user
-                
             }
             .store(in: &cancellables)
     }

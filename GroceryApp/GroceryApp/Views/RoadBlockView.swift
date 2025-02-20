@@ -16,6 +16,8 @@ struct RoadBlockView : View {
                 .font(.system(size: 30))
                 .fontWeight(.heavy)
                 .padding(.top)
+                .multilineTextAlignment(.center)
+
             
             ButtonsToAuth {
                 viewModel.toLogin()

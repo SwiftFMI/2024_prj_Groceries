@@ -10,27 +10,30 @@ import SwiftUI
 final class ProfileCoordinator: ObservableObject, Coordinator{
     @Published var path = [ProfileDestination]()
     private var auth = FirebaseAuth()
-
+    
     var initialDestination: ProfileDestination!
-
+    
     @MainActor
     init() {
         let vm = ProfileViewModel(
-                auth: auth,
-                toLogin: { [weak self] in
-                    self?.transitionToLogin()
-                },
-                toRegister: { [weak self] in
-                    self?.transitionToRegister()
-                }
-            )
+            auth: auth,
+            toLogin: { [weak self] in
+                self?.transitionToLogin()
+            },
+            toRegister: { [weak self] in
+                self?.transitionToRegister()
+            },
+            toMap: {
+                self.transitionToMap()
+            }
+        )
         self.initialDestination = .profile(viewModel: vm)
     }
-
+    
     func start() -> some View {
         ProfileCoordinatorView(coordinator: self)
     }
-        
+    
     private func profileDestination() -> ProfileDestination {
         .profile(viewModel: ProfileViewModel(
             auth: auth,
@@ -39,8 +42,15 @@ final class ProfileCoordinator: ObservableObject, Coordinator{
             },
             toRegister: {
                 self.transitionToRegister()
+            },
+            toMap: {
+                self.transitionToMap()
             }
         ))
+    }
+    
+    private func mapDestination() -> ProfileDestination {
+        .map(viewModel: MapViewModel())
     }
     
     
@@ -73,5 +83,9 @@ final class ProfileCoordinator: ObservableObject, Coordinator{
     
     private func transitionToProfile(){
         path.removeAll()
+    }
+    
+    private func transitionToMap(){
+        self.path.append(self.mapDestination())
     }
 }
