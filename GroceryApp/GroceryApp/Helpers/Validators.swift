@@ -8,31 +8,34 @@
 import SwiftUI
 
 final class Validators {
-    static func validatePass(pass: String) -> (Bool, String){
+
+    private init() {}
+
+    static func validatePass(pass: String) -> (Bool, String) {
         if pass.count < 6 {
-            return (false,"The password must be at least 6 characters")
+            return (false, "The password must be at least 6 characters")
         }
         else if !pass.contains(where: { ch in ch.isNumber }) {
-            return (false,"The password must contain at least 1 number")
+            return (false, "The password must contain at least 1 number")
         }
-        return (true,"")
+        return (true, "")
     }
-    
-    static func validateEmail(email: String) -> (Bool, String){
+
+    static func validateEmail(email: String) -> (Bool, String) {
         let emailRegex = #"^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$"#
         let predicate = NSPredicate(format: "SELF MATCHES[c] %@", emailRegex)
         let isEmailValid = predicate.evaluate(with: email)
 
         let emailErrorMessage = isEmailValid ? "" : "Invalid email format"
-        
-        return (isEmailValid, emailErrorMessage)
+
+        return(isEmailValid, emailErrorMessage)
     }
-    
-    static func validateUsername(userName: String) -> (Bool, String){
+
+    static func validateUsername(userName: String) -> (Bool, String) {
         if userName.count < 3 {
-            return (false,"The username must be at least 3 characters")
+            return (false, "The username must be at least 3 characters")
         }
 
-        return (true,"")
+        return (true, "")
     }
 }
