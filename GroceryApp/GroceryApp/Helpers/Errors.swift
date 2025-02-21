@@ -10,4 +10,5 @@ enum Errors : Error{
     case RegisterFailed
     case EmailUpdateFailed
     case LogoutFailed
+    case UserHistoryFetchFailed
 }

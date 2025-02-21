@@ -43,7 +43,9 @@ struct ProfileView: View {
     }
     
     var infoView: some View {
+        
         VStack(alignment: .leading, spacing: 32) {
+            
             VStack(alignment: .leading, spacing: 32){
                 VStack(alignment: .leading) {
                     Text("Username")
@@ -67,7 +69,6 @@ struct ProfileView: View {
                             .foregroundColor(.primary)
                     }
                 }
-                
                 
                 VStack(alignment: .leading) {
                     Text("Email")
@@ -104,70 +105,116 @@ struct ProfileView: View {
                 
             }.padding(.horizontal, 24)
             
-            Button(action: {
-                if viewModel.isEditing {
-                    viewModel.isEditing.toggle()
-                    viewModel.resetEditing()
-                }
-                viewModel.toMap()
-            }) {
-                HStack {
-                    Image(systemName: "cart.fill")
-                        .foregroundColor(.primary)
-                    
-                    Text("View Shops nearby")
-                        .fontWeight(.semibold)
-                        .foregroundColor(.primary)
-                    
-                    Spacer()
-                    
-                    Image(systemName: "chevron.right")
-                        .foregroundColor(.gray)
-                }
+            ShopsButton
+            
+            HistoryButton
+            
+            EditButton
+            
+            if !viewModel.isEditing {
+                LogoutButton
+            }
+        }
+    }
+    
+    var LogoutButton: some View {
+        Button(action: {
+            viewModel.logout()
+        }) {
+            Text("Logout")
+                .font(.headline)
+                .frame(maxWidth: .infinity)
                 .padding()
-                .overlay(
-                    RoundedRectangle(cornerRadius: 12)
-                        .stroke(Color.gray.opacity(0.4), lineWidth: 1.5)
-                )
+                .background(viewModel.isEditing ? Color.green : Color.blue)
+                .foregroundColor(.white)
+                .cornerRadius(10)
+                .padding([.leading, .trailing], 20)
+        }.alert(viewModel.errorText, isPresented: $viewModel.errorOnLogout) {
+            Button("OK", role: .cancel) { }
+        }
+    }
+    
+    var EditButton : some View {
+        Button(action: {
+            if viewModel.isEditing {
+                viewModel.save()
             }
-            
-            Button(action: {
-                if viewModel.isEditing {
-                    viewModel.save()
-                }
-                withAnimation{
-                    viewModel.isEditing.toggle()
-                }
-            }) {
-                Text(viewModel.isEditing ? "Save" : "Edit Profile")
-                    .font(.headline)
-                    .frame(maxWidth: .infinity)
-                    .padding()
-                    .background(viewModel.isEditing ? Color.green : Color.blue)
-                    .foregroundColor(.white)
-                    .cornerRadius(10)
-                    .padding([.leading, .trailing], 20)
-            }.alert(viewModel.errorText, isPresented: $viewModel.errorOnEdit) {
-                Button("OK", role: .cancel) { }
+            withAnimation{
+                viewModel.isEditing.toggle()
             }
-            
-            if !viewModel.isEditing{
-                Button(action: {
-                    viewModel.logout()
-                }) {
-                    Text("Logout")
-                        .font(.headline)
-                        .frame(maxWidth: .infinity)
-                        .padding()
-                        .background(viewModel.isEditing ? Color.green : Color.blue)
-                        .foregroundColor(.white)
-                        .cornerRadius(10)
-                        .padding([.leading, .trailing], 20)
-                }.alert(viewModel.errorText, isPresented: $viewModel.errorOnLogout) {
-                    Button("OK", role: .cancel) { }
-                }
+        }) {
+            Text(viewModel.isEditing ? "Save" : "Edit Profile")
+                .font(.headline)
+                .frame(maxWidth: .infinity)
+                .padding()
+                .background(viewModel.isEditing ? Color.green : Color.blue)
+                .foregroundColor(.white)
+                .cornerRadius(10)
+                .padding([.leading, .trailing], 20)
+        }.alert(viewModel.errorText, isPresented: $viewModel.errorOnEdit) {
+            Button("OK", role: .cancel) { }
+        }
+    }
+    
+    var ShopsButton : some View {
+        Button(action: {
+            if viewModel.isEditing {
+                viewModel.isEditing.toggle()
+                viewModel.resetEditing()
+            }
+            viewModel.toMap()
+        }) {
+            HStack {
+                Image(systemName: "cart.fill")
+                    .foregroundColor(.primary)
                 
+                Text("View Shops nearby")
+                    .fontWeight(.semibold)
+                    .foregroundColor(.primary)
+                
+                Spacer()
+                
+                Image(systemName: "chevron.right")
+                    .foregroundColor(.gray)
             }
+            .padding()
+            .overlay(
+                RoundedRectangle(cornerRadius: 12)
+                    .stroke(Color.gray.opacity(0.4), lineWidth: 1.5)
+            )
+            .padding([.leading, .trailing], 20)
+
+        }
+    }
+    
+    var HistoryButton : some View {
+        Button(action: {
+            if viewModel.isEditing {
+                viewModel.isEditing.toggle()
+                viewModel.resetEditing()
+            }
+            viewModel.toHistory()
+        }) {
+            HStack {
+                Image(systemName: "list.clipboard.fill")
+                    .foregroundColor(.primary)
+                
+                Text("History")
+                    .fontWeight(.semibold)
+                    .foregroundColor(.primary)
+                
+                Spacer()
+                
+                Image(systemName: "chevron.right")
+                    .foregroundColor(.gray)
+            }
+            .padding()
+            .overlay(
+                RoundedRectangle(cornerRadius: 12)
+                    .stroke(Color.gray.opacity(0.4), lineWidth: 1.5)
+            )
+            .padding([.leading, .trailing], 20)
+
         }
     }
 }

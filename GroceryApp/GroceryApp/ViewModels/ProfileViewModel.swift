@@ -14,7 +14,8 @@ final class ProfileViewModel: ObservableObject {
     init(auth: FirebaseAuth,
          toLogin: @escaping () -> Void,
          toRegister: @escaping () -> Void,
-         toMap: @escaping () -> Void
+         toMap: @escaping () -> Void,
+         toHistory: @escaping () -> Void
     ){
         self.auth = auth
         self.isUserLogged = auth.isLoggedIn()
@@ -22,6 +23,7 @@ final class ProfileViewModel: ObservableObject {
         self.toLogin = toLogin
         self.toRegister = toRegister
         self.toMap = toMap
+        self.toHistory = toHistory
         observeAuthChanges()
     }
     
@@ -50,11 +52,10 @@ final class ProfileViewModel: ObservableObject {
     let toLogin: () -> Void
     let toRegister: () -> Void
     let toMap: () -> Void
-    
+    let toHistory: () -> Void
     
     @Published var isUserLogged: Bool
     var user: User?
-    
     
     private var isEmailEdited = false
     private var isUserNameEdited = false
@@ -115,7 +116,6 @@ final class ProfileViewModel: ObservableObject {
             case .failure(let error):
                 self.errorOnEdit = true
                 self.errorText = "Error while updating email: \(error.localizedDescription)"
-                
             }
         }
         

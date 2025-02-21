@@ -29,6 +29,13 @@ struct ProfileDestination {
     static func map(viewModel: MapViewModel) -> Self {
         .init(destination: .map(viewModel: viewModel))
     }
+    
+    static func history(viewModel: HistoryViewModel) -> Self {
+        .init(destination: .history(viewModel: viewModel))
+    }
+    static func detailHistory(viewModel: DetailHistoryViewModel) -> Self {
+        .init(destination: .detailHistory(viewModel: viewModel))
+    }
 }
 
 extension ProfileDestination: Hashable {}

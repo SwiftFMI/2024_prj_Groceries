@@ -11,6 +11,7 @@ final class ProfileCoordinator: ObservableObject, Coordinator{
     @Published var path = [ProfileDestination]()
     private var auth: FirebaseAuth
     private var locationManager = LocationManager.shared
+    private var firebaseManager = FireStoreManager()
 
     var initialDestination: ProfileDestination!
 
@@ -26,10 +27,11 @@ final class ProfileCoordinator: ObservableObject, Coordinator{
             toRegister: { [weak self] in
                 self?.transitionToRegister()
             },
-            toMap: {
-                self.transitionToMap()
+            toMap: { [weak self] in
+                self?.transitionToMap()
+            }) { [weak self] in
+                self?.transitionToHistory()
             }
-        )
         self.initialDestination = .profile(viewModel: vm)
     }
 
@@ -49,6 +51,9 @@ final class ProfileCoordinator: ObservableObject, Coordinator{
                 },
                 toMap: {
                     self.transitionToMap()
+                },
+                toHistory: {
+                    self.transitionToHistory()
                 }
             )
         )
@@ -56,6 +61,22 @@ final class ProfileCoordinator: ObservableObject, Coordinator{
 
     private func mapDestination() -> ProfileDestination {
         .map(viewModel: MapViewModel(locationManager: locationManager))
+    }
+    
+    private func historyDestination() -> ProfileDestination {
+        .history(viewModel: HistoryViewModel(
+            firebaseManager: firebaseManager,
+            auth: auth,
+            toDetail: { cartData in
+                self.transitionToDetail(cartData: cartData)
+            }
+        ))
+    }
+    
+    private func detailHistoryDestination(cartData: ShoppingCartData) -> ProfileDestination {
+        .detailHistory(viewModel: DetailHistoryViewModel(
+            cartData: cartData
+        ))
     }
 
 
@@ -92,5 +113,13 @@ final class ProfileCoordinator: ObservableObject, Coordinator{
 
     private func transitionToMap(){
         self.path.append(self.mapDestination())
+    }
+    
+    private func transitionToHistory(){
+        self.path.append(self.historyDestination())
+    }
+    
+    private func transitionToDetail(cartData: ShoppingCartData){
+        self.path.append(self.detailHistoryDestination(cartData: cartData))
     }
 }
