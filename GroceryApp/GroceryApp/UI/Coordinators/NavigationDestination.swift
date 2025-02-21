@@ -11,7 +11,6 @@ enum NavigationDestination {
 
     // Home
     case home(viewModel: HomeViewModel)
-    case product(viewModel: ProductViewModel)
 
     // Shopiing Cart
     case shoppingCart(viewModel: ShoppingCartViewModel)
@@ -23,6 +22,7 @@ enum NavigationDestination {
     // Shared
     case login(viewModel: LoginViewModel)
     case register(viewModel: RegisterViewModel)
+    case product(viewModel: ProductViewModel)
 }
 
 extension NavigationDestination: Hashable {

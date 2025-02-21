@@ -13,28 +13,35 @@ final class ContentCoordinator: Coordinator, ObservableObject {
     var appState: AppState
     var firebaseManager: FireStoreManager
     let firebaseAuthManager: FirebaseAuth
+    let shoppingCartUpdater: ShoppingCartUpdater
 
     init(
         appState: AppState,
         firebaseManager: FireStoreManager,
-        firebaseAuthManager: FirebaseAuth
+        firebaseAuthManager: FirebaseAuth,
+        shoppingCartUpdater: ShoppingCartUpdater
     ) {
         self.appState = appState
         self.firebaseManager = firebaseManager
         self.firebaseAuthManager = firebaseAuthManager
+        self.shoppingCartUpdater = shoppingCartUpdater
     }
 
     @MainActor
     private lazy var homeCoordinator: HomeCoordinator = {
         HomeCoordinator(
             firebaseManager: firebaseManager,
-            firebaseAuthManager: firebaseAuthManager
+            firebaseAuthManager: firebaseAuthManager,
+            shoppingCartUpdater: shoppingCartUpdater
         )
     }()
 
     @MainActor
     private lazy var shoppingCartCoordinator: ShoppingCartCoordinator = {
-        ShoppingCartCoordinator(auth: firebaseAuthManager)
+        ShoppingCartCoordinator(
+            auth: firebaseAuthManager,
+            shoppingCartUpdater: shoppingCartUpdater
+        )
     }()
     
     @MainActor

@@ -14,15 +14,18 @@ final class ProductViewModel: ObservableObject {
 
     let product: ProductData
     let auth: FirebaseAuth
+    let shoppingCartUpdater: ShoppingCartUpdater
 
     private var cancellables = Set<AnyCancellable>()
 
     init(
         product: ProductData,
-        auth: FirebaseAuth
+        auth: FirebaseAuth,
+        shoppingCartUpdater: ShoppingCartUpdater
     ) {
         self.product = product
         self.auth = auth
+        self.shoppingCartUpdater = shoppingCartUpdater
         isUserLogged = auth.isLoggedIn()
 
         observeAuthChanges()

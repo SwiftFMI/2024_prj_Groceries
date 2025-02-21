@@ -14,13 +14,16 @@ final class HomeCoordinator: Coordinator, ObservableObject {
     var initialDestination: HomeDestination!
 
     let firebaseAuthManager: FirebaseAuth
+    let shoppingCartUpdater: ShoppingCartUpdater
 
     @MainActor
     init(
         firebaseManager: FireStoreManager,
-        firebaseAuthManager: FirebaseAuth
+        firebaseAuthManager: FirebaseAuth,
+        shoppingCartUpdater: ShoppingCartUpdater
     ) {
         self.firebaseAuthManager = firebaseAuthManager
+        self.shoppingCartUpdater = shoppingCartUpdater
 
         let homeViewModel = HomeViewModel(
             firebaseManager: firebaseManager,
@@ -50,7 +53,8 @@ extension HomeCoordinator {
         .product(
             viewModel: ProductViewModel(
                 product: product,
-                auth: firebaseAuthManager
+                auth: firebaseAuthManager,
+                shoppingCartUpdater: shoppingCartUpdater
             )
         )
     }

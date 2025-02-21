@@ -53,7 +53,6 @@ class FireStoreManager: ObservableObject {
                 print("Fetched: \(category)")
                 categories.append(category)
             }
-            print("± \(categories)")
             fetchedCategories = categories
 
         } catch {

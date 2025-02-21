@@ -14,7 +14,6 @@ struct ProductView: View {
     var body: some View {
         ScrollView {
             informationView
-            Text("\(viewModel.isUserLogged)")
             chartView
         }
         .padding()
@@ -36,7 +35,7 @@ struct ProductView: View {
             if viewModel.isUserLogged {
                 ToolbarItem(placement: .topBarTrailing) {
                     Button("Add to cart") {
-                        print("Add to cart")
+                        viewModel.shoppingCartUpdater.addItem(viewModel.product)
                     }
                 }
             }

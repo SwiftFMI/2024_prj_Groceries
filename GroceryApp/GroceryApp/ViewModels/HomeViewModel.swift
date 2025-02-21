@@ -61,7 +61,6 @@ final class HomeViewModel: ObservableObject {
                 guard let self = self else {
                     return
                 }
-                print("± \(categories)")
                 self.categories = categories
             }
             .store(in: &cancellables)

@@ -27,7 +27,15 @@ final class AppCoordinator: Coordinator, ObservableObject {
         ContentCoordinator(
             appState: appState,
             firebaseManager: firebaseManager,
-            firebaseAuthManager: firebaseAuth
+            firebaseAuthManager: firebaseAuth,
+            shoppingCartUpdater: shoppingCartUpdater
+        )
+    }()
+
+    private lazy var shoppingCartUpdater = {
+        ShoppingCartUpdater(
+            firebaseAuth: firebaseAuth,
+            firebaseManager: firebaseManager
         )
     }()
 
