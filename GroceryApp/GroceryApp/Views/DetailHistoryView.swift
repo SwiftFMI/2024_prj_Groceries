@@ -14,7 +14,7 @@ struct DetailHistoryView : View{
     
     var body : some View {
         VStack {
-            List(viewModel.cartData.carts.keys.sorted(by: { $0.name < $1.name }), id: \.id) { product in
+            List(viewModel.cartData.carts.keys.sorted(by: { $0.name > $1.name }), id: \.id) { product in
                     HStack {
                         Text(product.name)
                         Spacer()

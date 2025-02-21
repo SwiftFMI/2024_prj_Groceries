@@ -38,7 +38,7 @@ final class HistoryViewModel: ObservableObject {
     func fetchHistoryLists() async {
         
         await firebaseManager.fetchUserHistory(userID: auth.currentUser?.uid ?? "") { result in
-            DispatchQueue.main.async {  // ✅ Ensure UI updates happen on the main thread
+            DispatchQueue.main.async {
                 switch result {
                 case .success(let list):
                     self.lists = list
