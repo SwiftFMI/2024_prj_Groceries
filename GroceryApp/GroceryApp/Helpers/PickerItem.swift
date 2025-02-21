@@ -10,4 +10,9 @@ protocol PickerItem {
     var label: String { get }
 }
 
+struct PickerSheetItem: PickerItem {
+    var identifier: String
+    var label: String
+}
+
 typealias PresentSectionPicker = ([PickerItem], String?, @escaping (PickerItem) -> Void) -> Void

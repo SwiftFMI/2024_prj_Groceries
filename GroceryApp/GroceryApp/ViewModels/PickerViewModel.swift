@@ -5,6 +5,8 @@
 //  Created by Nikolay Dinkov on 19.02.25.
 //
 
+import SwiftUI
+
 struct PickerViewModel {
 
     var selectedItem: String?
@@ -13,5 +15,13 @@ struct PickerViewModel {
 
     var navigationTitle: String {
         "Sections"
+    }
+
+    func listBackgroundColor(_ item: PickerItem) -> Color {
+        return selectedItem == item.label ? .blue : .clear
+    }
+
+    func listItemTextColor(_ item: PickerItem) -> Color? {
+        return selectedItem == item.label ? .white : nil
     }
 }

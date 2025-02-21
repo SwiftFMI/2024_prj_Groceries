@@ -15,7 +15,13 @@ struct ProductData: Identifiable, Codable, Hashable {
     var pricesKaufland: [String: Double]
     var pricesBilla: [String: Double]
     
-    init(id: Int, name: String, pricesLidl: [String: Double], pricesKaufland: [String: Double], pricesBilla: [String: Double]) {
+    init(
+        id: Int,
+        name: String,
+        pricesLidl: [String: Double],
+        pricesKaufland: [String: Double],
+        pricesBilla: [String: Double]
+    ) {
         self.id = id
         self.name = name
         self.pricesLidl = pricesLidl
@@ -38,7 +44,11 @@ struct Category: Identifiable, Codable, Hashable {
     var name: String
     var products: [ProductData]
     
-    init(id: String? = nil, name: String, products:[ProductData]){
+    init(
+        id: String? = nil,
+        name: String,
+        products:[ProductData]
+    ){
         self.id = id
         self.name = name
         self.products = products

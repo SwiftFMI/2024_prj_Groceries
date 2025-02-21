@@ -25,6 +25,10 @@ struct ShoppingCartDestination {
     static func register(viewModel: RegisterViewModel) -> Self {
         .init(destination: .register(viewModel: viewModel))
     }
+
+    static func product(viewModel: ProductViewModel) -> Self {
+        .init(destination: .product(viewModel: viewModel))
+    }
 }
 
 extension ShoppingCartDestination: Hashable {}

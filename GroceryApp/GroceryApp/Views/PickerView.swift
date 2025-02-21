@@ -44,8 +44,10 @@ struct PickerView: View {
             },
             label: {
                 Text(item.label)
+                    .foregroundColor(viewModel.listItemTextColor(item))
             }
         )
+        .listRowBackground(viewModel.listBackgroundColor(item))
     }
 
     private func handleItemSelection(_ item: PickerItem) {
