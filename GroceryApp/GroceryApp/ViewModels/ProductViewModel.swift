@@ -11,6 +11,7 @@ import SwiftUI
 final class ProductViewModel: ObservableObject {
 
     @Published var isUserLogged: Bool
+    @Published var currentProviderDisplayed: Providers = .Billa
 
     let product: ProductData
     let auth: FirebaseAuth

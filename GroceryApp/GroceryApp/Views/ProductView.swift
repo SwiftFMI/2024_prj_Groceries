@@ -5,6 +5,7 @@
 //  Created by Nikolay Dinkov on 20.02.25.
 //
 
+import Charts
 import SwiftUI
 
 struct ProductView: View {
@@ -12,7 +13,7 @@ struct ProductView: View {
     @StateObject var viewModel: ProductViewModel
 
     var body: some View {
-        ScrollView {
+        VStack(spacing: 16) {
             informationView
             chartView
         }
@@ -43,6 +44,40 @@ struct ProductView: View {
     }
 
     var chartView: some View {
-        Text("Chart View")
+        VStack(spacing: 20) {
+            Picker("Provider", selection: $viewModel.currentProviderDisplayed) {
+                ForEach(Providers.allCases, id: \.self) { provider in
+                    Text(provider.name)
+                }
+            }
+            .pickerStyle(.segmented)
+            Chart {
+                chartContent(for: viewModel.currentProviderDisplayed)
+            }
+        }
+    }
+
+    private func chartContent(for provider: Providers) -> some ChartContent {
+        var data = viewModel.product.pricesBilla.getChartData()
+        if provider == .Kaufland {
+            data = viewModel.product.pricesKaufland.getChartData()
+        } else if provider == .Lidl {
+            data = viewModel.product.pricesLidl.getChartData()
+        }
+
+        return ForEach(data, id: \.date) { chartData in
+            LineMark(
+                x: .value("Index", chartData.date),
+                y: .value("Value", chartData.price)
+            )
+            .foregroundStyle(.blue)
+
+            AreaMark(
+                x: .value("Index", chartData.date),
+                yStart: .value("Value", chartData.price),
+                yEnd: .value("Bottom", 0)
+            )
+            .foregroundStyle(.blue.opacity(0.5))
+        }
     }
 }
