@@ -23,16 +23,16 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "AC06AAAB-BBA4-4BB7-AFEF-D280DDF588EF"
+            uuid = "51FF2A55-CE57-4201-8E9B-9E4BB08F20B1"
             shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "GroceryApp/ViewModels/ProfileViewModel.swift"
+            filePath = "GroceryApp/ViewModels/HistoryViewModel.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "116"
-            endingLineNumber = "116"
-            landmarkName = "editEmail()"
+            startingLineNumber = "45"
+            endingLineNumber = "45"
+            landmarkName = "fetchHistoryLists()"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

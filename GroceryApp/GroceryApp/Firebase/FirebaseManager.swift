@@ -11,9 +11,7 @@ import FirebaseFirestore
 
 class FireStoreManager: ObservableObject {
     var db: Firestore?
-    
-    var currentUserHistory: [String] = []
-        
+            
     private var cancellables = Set<AnyCancellable>()
 
     @MainActor @Published private(set) var fetchedCategories: [Category] = []
@@ -25,7 +23,7 @@ class FireStoreManager: ObservableObject {
     }
     
     init(){
-        connect()
+        self.connect()
     }
 
     @MainActor
@@ -64,27 +62,33 @@ class FireStoreManager: ObservableObject {
         }
     }
     
-    func fetchUserHistory(userID: String, completion: @escaping (Result<Bool, Error>) -> Void) async {
-        do  {
-            guard let userHistoryDoc = try await db?.collection("History").document(userID).getDocument() else {
+    func fetchUserHistory(userID: String, completion: @escaping (Result<[ShoppingCartData], Error>) -> Void) async {
+        do {
+            guard let userHistoryDoc = try await db?.collection("History").document(userID).getDocument(),
+                  let data = userHistoryDoc.data(),
+                  let historyArray = data["data"] as? [[String: Any]] else {
                 completion(.failure(Errors.UserHistoryFetchFailed))
                 return
             }
-            print(userHistoryDoc.data() ?? "")
-            completion(.success(true))
-            
+
+            let shoppingHistory = historyArray.compactMap { ShoppingCartData(from: $0) }
+            print("Fetched history: \(shoppingHistory)")
+            completion(.success(shoppingHistory))
+
         } catch {
             print("Error getting history: \(error)")
             completion(.failure(error))
         }
     }
     
-    func updateUserHistory(userID: String, newElement: String){
+    func updateUserHistory(userID: String, newElement: ShoppingCartData){
         let userHistoryDoc = db?.collection("History").document(userID)
+        let elementDict = newElement.toDictionary()
+
         userHistoryDoc?.getDocument { (document, error) in
             if let document = document, document.exists {
                 userHistoryDoc?.updateData([
-                    "data": FieldValue.arrayUnion([newElement])
+                    "data": FieldValue.arrayUnion([elementDict])
                 ]) { error in
                     if let error = error {
                         print("Error updating document: \(error)")
@@ -94,7 +98,7 @@ class FireStoreManager: ObservableObject {
                 }
             } else {
                 userHistoryDoc?.setData([
-                    "data": [newElement]
+                    "data": [elementDict]
                 ]) { error in
                     if let error = error {
                         print("Error creating document: \(error)")

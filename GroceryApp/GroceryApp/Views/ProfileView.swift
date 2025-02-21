@@ -193,7 +193,7 @@ struct ProfileView: View {
                 viewModel.isEditing.toggle()
                 viewModel.resetEditing()
             }
-            viewModel.toMap()
+            viewModel.toHistory()
         }) {
             HStack {
                 Image(systemName: "list.clipboard.fill")

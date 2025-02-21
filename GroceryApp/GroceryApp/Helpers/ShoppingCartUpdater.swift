@@ -53,7 +53,7 @@ final class ShoppingCartUpdater: ObservableObject {
 
     func finish() {
         guard shoppingCart != [:] else { return }
-
+        firebaseManager.updateUserHistory(userID: firebaseAuth.currentUser?.uid ?? "" , newElement: ShoppingCartData(carts: shoppingCart))
         shoppingCart = [:]
     }
 

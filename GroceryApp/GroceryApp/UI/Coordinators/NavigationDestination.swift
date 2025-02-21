@@ -18,6 +18,8 @@ enum NavigationDestination {
     // Profile
     case profile(viewModel: ProfileViewModel)
     case map(viewModel: MapViewModel)
+    case history(viewModel: HistoryViewModel)
+    case detailHistory(viewModel: DetailHistoryViewModel)
 
     // Shared
     case login(viewModel: LoginViewModel)
@@ -44,6 +46,10 @@ extension NavigationDestination: Hashable {
             lhsVM === rhsVM
         case let (.map(lhsVM), .map(rhsVM)):
             lhsVM === rhsVM
+        case let (.history(lhsVM), .history(rhsVM)):
+            lhsVM === rhsVM
+        case let (.detailHistory(lhsVM), .detailHistory(rhsVM)):
+            lhsVM === rhsVM
         default:
             false
         }
@@ -67,6 +73,10 @@ extension NavigationDestination: View {
             RegisterView(vm: viewModel)
         case let .map(viewModel: viewModel):
             MapView(viewModel: viewModel)
+        case let .history(viewModel: viewModel):
+            HistoryView(viewModel: viewModel)
+        case let .detailHistory(viewModel: viewModel):
+            DetailHistoryView(viewModel: viewModel)
         }
     }
 }
