@@ -17,13 +17,12 @@ enum NavigationDestination {
 
     // Profile
     case profile(viewModel: ProfileViewModel)
-    
+    case map(viewModel: MapViewModel)
+
     // Shared
     case login(viewModel: LoginViewModel)
     case register(viewModel: RegisterViewModel)
-    
-    case map(viewModel: MapViewModel)
-
+    case product(viewModel: ProductViewModel)
 }
 
 extension NavigationDestination: Hashable {
@@ -33,7 +32,7 @@ extension NavigationDestination: Hashable {
 
     static func == (lhs: NavigationDestination, rhs: NavigationDestination) -> Bool {
         switch (lhs, rhs) {
-            case let (.home(lhsVM), .home(rhsVM)):
+        case let (.home(lhsVM), .home(rhsVM)):
             lhsVM === rhsVM
         case let (.shoppingCart(lhsVM), .shoppingCart(rhsVM)):
             lhsVM === rhsVM
@@ -54,19 +53,20 @@ extension NavigationDestination: Hashable {
 extension NavigationDestination: View {
     var body: some View {
         switch self {
-            case let .home(viewModel):
-                HomeView(viewModel: viewModel)
-            case let .shoppingCart(viewModel):
-                ShoppingCartView(viewModel: viewModel)
-            case let .profile(viewModel):
+        case let .home(viewModel):
+            HomeView(viewModel: viewModel)
+        case let .shoppingCart(viewModel):
+            ShoppingCartView(viewModel: viewModel)
+        case let .profile(viewModel: viewModel):
             ProfileView(viewModel: viewModel)
-            case let .login(viewModel):
-                LoginView(viewModel: viewModel)
-            case let .register(viewModel):
-                RegisterView(vm: viewModel)
+        case let .product(viewModel: viewModel):
+            ProductView(viewModel: viewModel)
+        case let .login(viewModel):
+            LoginView(viewModel: viewModel)
+        case let .register(viewModel):
+            RegisterView(vm: viewModel)
         case let .map(viewModel: viewModel):
             MapView(viewModel: viewModel)
-            
         }
     }
 }

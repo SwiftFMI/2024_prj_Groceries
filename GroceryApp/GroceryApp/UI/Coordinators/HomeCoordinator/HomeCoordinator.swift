@@ -13,14 +13,25 @@ final class HomeCoordinator: Coordinator, ObservableObject {
 
     var initialDestination: HomeDestination!
 
+    let firebaseAuthManager: FirebaseAuth
+    let shoppingCartUpdater: ShoppingCartUpdater
+
     @MainActor
-    init(firebaseManager: FireStoreManager) {
+    init(
+        firebaseManager: FireStoreManager,
+        firebaseAuthManager: FirebaseAuth,
+        shoppingCartUpdater: ShoppingCartUpdater
+    ) {
+        self.firebaseAuthManager = firebaseAuthManager
+        self.shoppingCartUpdater = shoppingCartUpdater
+
         let homeViewModel = HomeViewModel(
             firebaseManager: firebaseManager,
             currentSectionIndex: 0,
             presentPicker: { [weak self] items, currentCategoryId, onChanged in
                 self?.presentPicker(with: items, currentCategoryId: currentCategoryId, onItemPicked: onChanged)
-            }
+            },
+            openProductPageAction: openProduct
         )
 
         self.initialDestination = .home(viewModel: homeViewModel)
@@ -29,6 +40,22 @@ final class HomeCoordinator: Coordinator, ObservableObject {
     func start() -> some View {
         HomeCoordinatorView(coordinator: self)
     }
+
+    private func openProduct(_ product: ProductData) {
+        self.path.append(self.productDestination(for: product))
+    }
 }
 
 extension HomeCoordinator: PickerPresentable {}
+
+extension HomeCoordinator {
+    private func productDestination(for product: ProductData) -> HomeDestination {
+        .product(
+            viewModel: ProductViewModel(
+                product: product,
+                auth: firebaseAuthManager,
+                shoppingCartUpdater: shoppingCartUpdater
+            )
+        )
+    }
+}

@@ -12,13 +12,14 @@ import FirebaseFirestore
 class FireStoreManager: ObservableObject {
     var db: Firestore?
     
-    @Published var fetchedCategories: [Category] = []
     var currentUserHistory: [String] = []
-    
-    var categoriesPublisher: AnyPublisher<[Category], Never> { $fetchedCategories.eraseToAnyPublisher() }
-    
+        
     private var cancellables = Set<AnyCancellable>()
-    
+
+    @MainActor @Published private(set) var fetchedCategories: [Category] = []
+
+    var categoriesPublisher: AnyPublisher<[Category], Never> { $fetchedCategories.eraseToAnyPublisher() }
+
     func connect() {
         db = Firestore.firestore()
     }
@@ -26,7 +27,8 @@ class FireStoreManager: ObservableObject {
     init(){
         connect()
     }
-    
+
+    @MainActor
     func fetchCategories() async {
         do {
             guard let categoriesDoc = try await db?.collection("Categories").getDocuments(source: .default) else {

@@ -10,23 +10,27 @@ import SwiftUI
 
 final class HomeViewModel: ObservableObject {
     @Published private(set) var categories: [Category] = []
-    @Published var currentSectionIndex: Int = 0
+    @Published var currentCategoryIndex: Int = 0
 
     let presentPicker: PresentSectionPicker
     let firebaseManager: FireStoreManager
+
+    let openProductPageAction: (ProductData) -> Void
 
     private var cancellables: Set<AnyCancellable> = []
 
     init(
         firebaseManager: FireStoreManager,
         currentSectionIndex: Int,
-        presentPicker: @escaping PresentSectionPicker
+        presentPicker: @escaping PresentSectionPicker,
+        openProductPageAction: @escaping (ProductData) -> Void
     ) {
         self.firebaseManager = firebaseManager
-        self.currentSectionIndex = currentSectionIndex
+        self.currentCategoryIndex = currentSectionIndex
         self.presentPicker = presentPicker
+        self.openProductPageAction = openProductPageAction
 
-
+        configureCategoriesPublisher()
     }
 
     var sectionName: String? {
@@ -34,10 +38,19 @@ final class HomeViewModel: ObservableObject {
     }
 
     private var currentCategory: Category? {
-        guard categories.indices.contains(currentSectionIndex) else {
+        guard categories.indices.contains(currentCategoryIndex) else {
             return nil
         }
-        return categories[currentSectionIndex]
+        return categories[currentCategoryIndex]
+    }
+
+    func changeCategory(to newCategoryId: String) {
+        let newCategoryIndex = categories.firstIndex { $0.id == newCategoryId } ?? 0
+        currentCategoryIndex = newCategoryIndex
+    }
+
+    func averagePrice(for product: ProductData) -> Double {
+        return (product.pricesBilla.values.reduce(0, +) / Double(product.pricesBilla.count) + product.pricesLidl.values.reduce(0, +) / Double(product.pricesLidl.count) + product.pricesKaufland.values.reduce(0, +) / Double(product.pricesKaufland.count)) / 3
     }
 
     private func configureCategoriesPublisher() {
@@ -48,7 +61,6 @@ final class HomeViewModel: ObservableObject {
                 guard let self = self else {
                     return
                 }
-                print("± \(categories)")
                 self.categories = categories
             }
             .store(in: &cancellables)
