@@ -46,7 +46,7 @@ final class ShoppingCartViewModel: ObservableObject {
     }
 
     var bestPrice: Double {
-        min(min(billaPriceCombined, kauflandPriceCombined), lidlPriceCombined)
+        min(billaPriceCombined, kauflandPriceCombined, lidlPriceCombined)
     }
 
     var bestPriceProvider: String {

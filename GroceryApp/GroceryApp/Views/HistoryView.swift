@@ -30,7 +30,7 @@ struct HistoryView: View {
                 .onTapGesture { _ in
                     viewModel.toDetail(list)
                 }
-                
+
             }
         }.task {
             await viewModel.fetchHistoryLists()
